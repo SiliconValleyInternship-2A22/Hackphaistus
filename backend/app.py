@@ -9,7 +9,7 @@ CORS(app, resources={r'*':{'origins': 'http://localhost:3000'}})
 
 @app.route('/api') # Main
 def main():
-  return 'Hi';
+  return render_template('index.html');
 
 @app.route('/api/checkCors', methods = ['POST']) # Cors Check
 def setBtn():
@@ -27,7 +27,7 @@ def fileUpload():
         global imgFileName
         imgFileName = secure_filename(imgFile.filename)
         path = os.path.join(Upload_URL, imgFileName)
-        
+
         return jsonify({"success": True, "file": "Received", "name": filename})  
 
 # 받은 img 파일 -> Flask -> RabbitMQ -> AI -> Flask
@@ -41,7 +41,6 @@ def printResult():
   if request.method == "POST":
     abilities = "abc"
   return abilities
-
 
 
 if __name__=="__main__":
