@@ -1,0 +1,17 @@
+# Pull the image (and version) 
+FROM node:16.13.1
+
+# Set the working directory
+WORKDIR /app
+
+# Copy the file from your host to docker-con /app/ location 
+COPY package.json /app/
+
+# Install
+RUN npm install
+RUN npm install react-scripts
+
+ADD . /app
+
+# Expose port 
+EXPOSE 3000
