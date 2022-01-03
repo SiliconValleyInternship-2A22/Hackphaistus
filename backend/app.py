@@ -7,13 +7,42 @@ app = Flask(__name__)
 # CORS(app)
 CORS(app, resources={r'*':{'origins': 'http://localhost:3000'}})
 
-@app.route('/api') # 접속하는 url
+@app.route('/api') # Main
 def main():
   return 'Hi';
 
-@app.route('/api/checkCors', methods = ['POST'])
+@app.route('/api/checkCors', methods = ['POST']) # Cors Check
 def setBtn():
   return 'Server has checked your request';
+
+@app.route("/api/fileUpload", methods=["POST"]) # img file Upload
+def fileUpload():
+    if request.method == "POST":
+        # 파일이 존재하지 않을 경우
+        # if "file" not in request.files:
+        #     flash("no file part")
+        #     return redirect(request.rul)
+
+        imgFile = request.files["file"]
+        global imgFileName
+        imgFileName = secure_filename(imgFile.filename)
+        path = os.path.join(Upload_URL, imgFileName)
+        
+        return jsonify({"success": True, "file": "Received", "name": filename})  
+
+# 받은 img 파일 -> Flask -> RabbitMQ -> AI -> Flask
+def calculateRatio():
+  return 0
+
+
+@app.route("/api/printResult", methods=["POST"])
+def printResult():
+  abilities = "xxx"
+  if request.method == "POST":
+    abilities = "abc"
+  return abilities
+
+
 
 if __name__=="__main__":
   # host 등을 직접 지정하고 싶다면
