@@ -6,6 +6,7 @@ RUN mkdir -p /node
 ADD . /node
 WORKDIR /node
 RUN npm install
+RUN npm install react-scripts
 #CMD ['node', 'server.js']
 
 # permission
