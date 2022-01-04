@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask, render_template
+from flask import Flask, request, render_template
 from flask_cors import CORS
 
 #Flask 객체 인스턴스 생성
@@ -27,8 +27,7 @@ def fileUpload():
         global imgFileName
         imgFileName = secure_filename(imgFile.filename)
         path = os.path.join(Upload_URL, imgFileName)
-
-        return jsonify({"success": True, "file": "Received", "name": filename})  
+        return jsonify({"success": True, "file": "Received", "name": imgFileName})  
 
 # 받은 img 파일 -> Flask -> RabbitMQ -> AI -> Flask
 def calculateRatio():
