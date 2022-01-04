@@ -12,7 +12,6 @@ const App = () => {
 
     const imageUrl = URL.createObjectURL(imageFile);
     setFileUrl(imageUrl)
-
     
   }
 
