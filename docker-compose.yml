@@ -5,7 +5,7 @@ services:
   frontend:
     build: 
       context: ./frontend
-      #dockerfile: ./frontend/Dockerfile
+      dockerfile: ./frontend/Dockerfile
     command : ["npm","start"]  
     ports:
      - "3000:3000"
@@ -30,14 +30,15 @@ services:
   backend:
     build:
       context: ./backend
-      #dockerfile: ./backend/Dockerfile
+      dockerfile: ./backend/Dockerfile
     ports:
      - "5000:5000" 
     volumes:
      -  ./backend:/app
     links :
-     - mysql_db 
-    networks: app-tier 
+     - mysql_db:mysql_db
+    networks: 
+     - app-tier 
 
 
   # rabbit:
@@ -51,9 +52,14 @@ services:
   #  - app-tier
 
   # nginx :
-  #   build:
-  #     command : gunicorn app:app -b 0.0.0.0:5000
-  
+  #   image: nginx:latest
+  #   ports:
+  #    - "80:80"
+  #    - "8000:8000"
+  #   command : gunicorn app:app -b 0.0.0.0:5000
+  #   depend_on:
+  #    - backend
+  #   networks: app-tier
 
   networks: 
     app-tier:
