@@ -1,17 +1,31 @@
 # Pull the image (and version) 
 FROM node:16.13.1
 
-# Set the working directory
-WORKDIR /app
-
-# Copy the file from your host to docker-con /app/ location 
-COPY package.json /app/
-
 # Install
 RUN npm install
 RUN npm install react-scripts
+
+# Copy the file from your host to docker-con /app/ location 
+COPY package.json ./
+
+# Set the working directory
+WORKDIR /usr/app
+RUN npm run build
 
 ADD . /app
 
 # Expose port 
 EXPOSE 3000
+
+
+COPY ./ ./
+
+# permission
+# RUN chmod 777 node_modules
+
+# Start 
+CMD ["npm", "start"]
+
+
+# docker build -t frontend-img .
+# docker run --name frontend-con -it -p 3000:3000 --rm frontend-img
