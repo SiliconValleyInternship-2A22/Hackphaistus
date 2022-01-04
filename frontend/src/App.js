@@ -25,21 +25,16 @@ const App = () => {
 
       
 
-  axios.post("http://localhost:5000/api/checkCors" , formData, config).then(
-    response=>{
-      if (response.data.success) {
-        alert('파일 저장 성공?!')
-    } else {
-        alert('파일 저장 실패')
-    }
+  axios.post("http://localhost:5000/api/fileUpload" , formData, config).then(response=>{
+      console.log(response.data);
     }
   )}
 
   return (
     <div className='App'>
       <img alt="hey" src={fileUrl}></img>
-    <input id="profile-upload" type="file" accept="image/*" onChange={processImage}/>
-    <button onClick={setBtn}>2A22</button>
+      <input id="profile-upload" type="file" accept="image/*" onChange={processImage}/>
+      <button onClick={setBtn}>2A22</button>
     </div>
   );
 }
