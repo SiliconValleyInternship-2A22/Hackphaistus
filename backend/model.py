@@ -1,15 +1,15 @@
 from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
-class Members(db.Model):
-    """ table name : members
+class physiognomy(db.Model):
+    """ table name : physiognomy
         table info 
     - id : index id 
     - name 
     - start: start datetime
     - end: end datetime """
     
-    __tablename__ = 'members'
+    __tablename__ = 'physiognomy'
     
     id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
     name = db.Column(db.String(20, 'utf8mb4_unicode_ci'))
