@@ -1,5 +1,5 @@
 # app.py
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 
 #Flask 객체 인스턴스 생성
@@ -15,19 +15,15 @@ def main():
 def setBtn():
   return 'Server has checked your request';
 
-@app.route("/api/fileUpload", methods=["POST"]) # img file Upload
+@app.route('/api/fileUpload', methods = ['POST']) # img file Upload
 def fileUpload():
-    if request.method == "POST":
-        # 파일이 존재하지 않을 경우
-        # if "file" not in request.files:
-        #     flash("no file part")
-        #     return redirect(request.rul)
-
-        imgFile = request.files["file"]
-        global imgFileName
-        imgFileName = secure_filename(imgFile.filename)
-        path = os.path.join(Upload_URL, imgFileName)
-        return jsonify({"success": True, "file": "Received", "name": imgFileName})  
+  if request.method == 'POST':
+    file = request.files['file']
+    # global imgFileName
+    # imgFileName = secure_filename(imgFile.filename
+    # path = os.path.join(Upload_URL, imgFileName)
+    return jsonify({"success": True, "file": "Received", "name": file.filename})  
+    
 
 # 받은 img 파일 -> Flask -> RabbitMQ -> AI -> Flask
 def calculateRatio():

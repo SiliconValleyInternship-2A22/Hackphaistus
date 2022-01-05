@@ -1,40 +1,29 @@
 import React, {useState} from 'react';
 import axios from 'axios';
 
-const App = () => {
-  
-   const [fileUrl, setFileUrl] = useState(null);
-  
-   function processImage(event){
-    event.preventDefault();
-
-    const imageFile = event.target.files[0];
-
-    const imageUrl = URL.createObjectURL(imageFile);
-    setFileUrl(imageUrl)
-
-    
+const App = () => { 
+  const [img,setImg] = useState(null);
+  const [fileUrl, setFileUrl] = useState(null);
+  const uploadImg = (e) => {
+    const currentFile = e.target.files[0];
+    setImg(currentFile);
   }
 
-  const setBtn = (fileUrl) => {
-    const formData = new FormData()
-    const config = {
-      header: {'content-type': 'multipart/form-data'}
-  }
-  formData.append('file',fileUrl)
-
-      
-
-  axios.post("http://localhost:5000/api/fileUpload" , formData, config).then(response=>{
+  const postImg = () => {
+    const formData = new FormData();
+    formData.append('file', img);
+    console.log(img);
+    axios.post("http://localhost:5000/api/fileUpload", formData).then(response=>{
       console.log(response.data);
-    }
-  )}
+    })
+    .catch(err=>{console.log('Failed to send img file to server');})
+  }
 
   return (
     <div className='App'>
-      <img alt="hey" src={fileUrl}></img>
-      <input id="profile-upload" type="file" accept="image/*" onChange={processImage}/>
-      <button onClick={setBtn}>2A22</button>
+      {img == null ? <p></p> :<img src={fileUrl}/>}
+      <input id="profile-upload" type="file" accept="image/*" onChange={uploadImg}/>
+      <button onClick={postImg}>관상 결과 보기</button>
     </div>
   );
 }
