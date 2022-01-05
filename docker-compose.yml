@@ -4,42 +4,42 @@ services:
 
   frontend:
     build: 
-      context: ./frontend
-      dockerfile: ./frontend/Dockerfile
-    command : ["npm","start"]  
+      context: ./frontend 
     ports:
      - "3000:3000"
+    container_name: frontend-con
     volumes: 
-     -  ./frontend:/app
+      - ./frontend/:/app
     network : app-tier
     #environment:
+    #stdin_open: true
+    #restart: always
 
-  mysql_db:
-    image: mysql:8.0
-    networks: app-tier
-    volumes:
-    ports:
-     - "3306:3306"
-    environment:
-     - MYSQL_DATABASE=app 
-     - MYSQL_USER= #채우기
-     - MYSQL_PASSWORD= 
-     - MYSQL_ROOT_PASSWORD=
-    command: 
+  # mysql_db:
+  #   image: mysql:8.0
+  #   networks: app-tier
+  #   volumes:
+  #   ports:
+  #    - "3306:3306"
+  #   environment:
+  #    - MYSQL_DATABASE=app 
+  #    - MYSQL_USER= #채우기
+  #    - MYSQL_PASSWORD= 
+  #    - MYSQL_ROOT_PASSWORD=
+  #   command: 
 
   backend:
     build:
       context: ./backend
-      dockerfile: ./backend/Dockerfile
     ports:
      - "5000:5000" 
-    volumes:
-     -  ./backend:/app
-    links :
-     - mysql_db:mysql_db
+    container_name: backend-con
     networks: 
-     - app-tier 
-
+     - app-tier
+    volumes:
+     - ./backend/:/app
+    #command: gunicorn -w 1 -b 0.0.0.0:5000 --timeout=300 run:app
+   
 
   # rabbit:
   #  hostname: rabbit
@@ -51,17 +51,18 @@ services:
   # networks:
   #  - app-tier
 
-  # nginx :
-  #   image: nginx:latest
-  #   ports:
-  #    - "80:80"
-  #    - "8000:8000"
-  #   command : gunicorn app:app -b 0.0.0.0:5000
-  #   depend_on:
-  #    - backend
-  #   networks: app-tier
+  nginx :
+    image: nginx:latest
+    ports:
+     - "8080:8080"
+     - "8000:8000"
+  volumes:
+      - ./nginx/nginx.conf:/app/nginx/nginx.conf
+  depend_on:
+  - frontend
+  - backend
+  networks:
+      - app_tier
+  driver: bridge # 컨테이너를 bridge로 연결
 
-  networks: 
-    app-tier:
-      driver: bridge
-
+#docker-compose up -d
