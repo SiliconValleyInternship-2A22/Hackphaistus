@@ -1,6 +1,8 @@
 # app.py
 from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
+from connection import s3_connection
+from config import BUCKET_NAME
 
 #Flask 객체 인스턴스 생성
 app = Flask(__name__)
@@ -18,11 +20,17 @@ def setBtn():
 @app.route('/api/fileUpload', methods = ['POST']) # img file Upload
 def fileUpload():
   if request.method == 'POST':
+    global file
     file = request.files['file']
-    # global imgFileName
-    # imgFileName = secure_filename(imgFile.filename
-    # path = os.path.join(Upload_URL, imgFileName)
-    return jsonify({"success": True, "file": "Received", "name": file.filename})  
+
+    # AWS S3 bucket
+    s3 = s3_connection()
+    s3.put_object(Bucket = BUCKET_NAME,Body = file,Key = file.filename,
+    	ContentType = file.content_type)
+
+    global path
+    path = "s3://siliconvalleyinternship2a22/"+file.filename
+    return jsonify({"success": True, "file": "Received", "name": file.filename, "path": path})  
     
 
 # 받은 img 파일 -> Flask -> RabbitMQ -> AI -> Flask
@@ -56,10 +64,6 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "mysql+pymysql://root:1234@localhost:330
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
-@app.route('/home')
-def home():
-    return render_template('home.html')
-    
 @app.route("/one")
 def home():
 	member = Members.query.first()
