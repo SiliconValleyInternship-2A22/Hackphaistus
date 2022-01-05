@@ -1,16 +1,24 @@
 FROM python:3.8.8
 
+# This prevents Python from writing out pyc files
+ENV PYTHONDONTWRITEBYTECODE 1
+
+# This keeps Python from buffering stdin/stdout
+ENV PYTHONUNBUFFERED 1
+
+EXPOSE 5000
 
 WORKDIR /backend
 COPY . ./
 
-
+# RUN pip install -U python
+RUN pip install -U flask
+RUN pip install -U flask-cors
 RUN pip install --upgrade pip
-RUN pip install -r requirement.txt 
-
+# RUN pip install -r requirement.txt
 
 EXPOSE 5000
+CMD [ "python", "app.py"]
 
-CMD ["python", "app.py"]
-
-#docker run --name backend-con -it -p 5000:5000 --rm backend-img
+# docker build -t backend-img .
+# docker run --name backend-con -it -p 5000:5000 --rm backend-img
