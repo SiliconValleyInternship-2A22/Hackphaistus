@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: ./frontend/Dockerfile
+    command : ["npm","start"]  
+    ports:
+     - "3000:3000"
+    volumes: 
+     -  ./frontend:/app
+    network : app-tier
+    #environment:
+
+  mysql_db:
+    image: mysql:8.0
+    networks: app-tier
+    volumes:
+    ports:
+     - "3306:3306"
+    environment:
+     - MYSQL_DATABASE=app 
+     - MYSQL_USER= #채우기
+     - MYSQL_PASSWORD= 
+     - MYSQL_ROOT_PASSWORD=
+    command: 
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ./backend/Dockerfile
+    ports:
+     - "5000:5000" 
+    volumes:
+     -  ./backend:/app
+    links :
+     - mysql_db:mysql_db
+    networks: 
+     - app-tier 
+
+
+  # rabbit:
+  #  hostname: rabbit
+  #  image : rabbitmq:3-management
+  #  environment:
+  #   - RABBITMQ_DEFAULT_USER= #채우기
+  #   - RABBITMQ_DEFAULT_PASS= 
+  # ports:
+  # networks:
+  #  - app-tier
+
+  # nginx :
+  #   image: nginx:latest
+  #   ports:
+  #    - "80:80"
+  #    - "8000:8000"
+  #   command : gunicorn app:app -b 0.0.0.0:5000
+  #   depend_on:
+  #    - backend
+  #   networks: app-tier
+
+  networks: 
+    app-tier:
+      driver: bridge
+
