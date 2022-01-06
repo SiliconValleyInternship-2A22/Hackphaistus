@@ -1,0 +1,4 @@
+flask
+flask-cors
+certifi==2021.10.8
+gunicorn==20.1.0
