@@ -1,7 +1,7 @@
 # app.py
 from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
-from connection import s3_connection
+# from connection import s3_connection
 from config import BUCKET_NAME
 
 #Flask 객체 인스턴스 생성
