@@ -1,10 +1,9 @@
 # app.py
 from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
-from S3bucket.connection import s3_connection
-from S3bucket.config import BUCKET_NAME, LOCATION
-# import detectLandmarks
-
+from connection import s3_connection
+from config import BUCKET_NAME, LOCATION
+import detectLandmarks
 
 #Flask 객체 인스턴스 생성
 app = Flask(__name__)
@@ -32,17 +31,17 @@ def fileUpload():
     s3path = "s3://{BUCKET_NAME}/"+filename
     global s3url
     s3url = f'https://{BUCKET_NAME}.s3.{LOCATION}.amazonaws.com/{filename}'
+
     calculateRatio()
     return jsonify({"success": True, "file": "Received", "name": filename, "path": s3path})  
     
 
 # 받은 img 파일 -> Flask -> RabbitMQ (-> Python -> AI -> Python) -> Flask
-'''
 def calculateRatio():
   result = detectLandmarks.main()
   print(result)
   return 0
-'''
+
 
 @app.route("/api/printResult", methods=["POST"])
 def printResult():
@@ -51,10 +50,8 @@ def printResult():
 
 
 if __name__=="__main__":
-  app.run(debug=True)
   # host 등을 직접 지정하고 싶다면
-  #app.run(host="127.0.0.1", port="5000", debug=True)
-
+  app.run(host="127.0.0.1", port="5000", debug=True)
 
 
 '''
