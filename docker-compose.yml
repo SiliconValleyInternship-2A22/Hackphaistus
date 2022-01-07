@@ -56,23 +56,18 @@ services:
   #컨테이너 실행: docker run -d -p 15672:15672 -p 5672:5672 --name  msa-rabbitmq rabbitmq:3-management                                   
 
 
-  # db: # 서비스 명
-  #   image: mysql # 사용할 이미지
-  #   container_name: mysql-con # 컨테이너 이름 설정
-  #   ports:
-  #     - "3306:3306" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
-  #   environment: # -e 옵션
-      
-  #   command: # 명령어 실행
-  #     - --character-set-server=utf8mb4
-  #     - --collation-server=utf8mb4_unicode_ci
-  #   volumes:
-  #     - /var/lib/docker/volumes/mysql/_data # -v 옵션 (다렉토리 마운트 설정)
-  #   restart: always
-    #docker logs mysql
-#mysql -u root -p -h 127.0.0.1 -P 13306
-# docker run --name mysql-con -v /var/lib/docker/volumes/mysql/_data -e MYSQL_ROOT_PASSWORD=dbof2a22 -d mysql:latest
-
+  db: # 서비스 명
+    image: mysql # 사용할 이미지
+    container_name: mysql-con # 컨테이너 이름 설정
+    ports:
+      - "3306:3306" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
+    environment: # -e 옵션
+      MYSQL_ROOT_PASSWORD: "password"  # MYSQL 패스워드 설정 옵션
+    command: # 명령어 실행
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - /var/lib/docker/volumes/mysql/_data # -v 옵션 (다렉토리 마운트 설정)
 
 
 #docker-compose up -d
@@ -84,3 +79,19 @@ services:
 #volume
 #docker volume prune
 # sudo curl -L "https://github.com/docker/compose/releases/download/2.2.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+# docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=dbof2a22162 --name mysql-con -v /var/lib/docker/volumes/mysql/_data mysql:latest --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+
+# docker exec -it mysql-con bash
+
+#mysql> CREATE USER '2a22'@'%' IDENTIFIED BY 'dbof2a22162';
+# Query OK, 0 rows affected (0.00 sec)
+
+# mysql> GRANT ALL PRIVILEGES ON *.* TO '2a22'@'%';
+# Query OK, 0 rows affected (0.00 sec)
+
+# mysql> flush privileges;
+# Query OK, 0 rows affected (0.00 sec)
+
+# mysql> quit
