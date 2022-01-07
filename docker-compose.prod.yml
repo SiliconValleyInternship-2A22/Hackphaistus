@@ -1,4 +1,4 @@
-version: "2.2"
+version: "1.25"
 
 services:
 
@@ -52,31 +52,31 @@ services:
   # networks:
   #  - app-tier
 
-  # db: # 서비스 명
-  #   image: mysql # 사용할 이미지
-  #   container_name: mysql-con # 컨테이너 이름 설정
-  #   ports:
-  #     - "3306:3306" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
-  #   environment: # -e 옵션
+  nginx :
+    image: nginx:latest
+    ports:
+     - "8080:8080"
+  volumes:
+      - /var/lib/docker/volumes/nginx/_data
+  depend_on:
+  - frontend
+  - backend
+  networks:
+      - hackphaistus
+  driver: bridge # 컨테이너를 bridge로 연결
+  restart: always
+
+
+  db: # 서비스 명
+    image: mysql # 사용할 이미지
+    container_name: mysql-con # 컨테이너 이름 설정
+    ports:
+      - "3306:3306" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
+    environment: # -e 옵션
       
-  #   command: # 명령어 실행
-  #     - --character-set-server=utf8mb4
-  #     - --collation-server=utf8mb4_unicode_ci
-  #   volumes:
-  #     - /var/lib/docker/volumes/mysql/_data # -v 옵션 (다렉토리 마운트 설정)
-  #   restart: always
-    #docker logs mysql
-#mysql -u root -p -h 127.0.0.1 -P 13306
-# docker run --name mysql-con -v /var/lib/docker/volumes/mysql/_data -e MYSQL_ROOT_PASSWORD=dbof2a22 -d mysql:latest
-
-
-
-#docker-compose up -d
-
-#network
-# docker network : hackphaistus
-# docker exec frontend-con ping backend-con
-
-#volume
-#docker volume prune
-# sudo curl -L "https://github.com/docker/compose/releases/download/2.2.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    command: # 명령어 실행
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - /var/lib/docker/volumes/mysql/_data # -v 옵션 (다렉토리 마운트 설정)
+    restart: always
