@@ -45,7 +45,7 @@ services:
   rabbitmq:
     image : rabbitmq:3-management
     environment:
-     - RABBITMQ_DEFAULT_USER= 2a22users
+     - RABBITMQ_DEFAULT_USER= 2a22user
      - RABBITMQ_DEFAULT_PASS= hackphaistus
     ports:
      - "5672:5672"
