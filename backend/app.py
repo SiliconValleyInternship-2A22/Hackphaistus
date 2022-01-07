@@ -1,8 +1,9 @@
 # app.py
 from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
-# from connection import s3_connection
-from config import BUCKET_NAME
+from connection import s3_connection
+from config import BUCKET_NAME, LOCATION
+import detectLandmarks
 
 #Flask 객체 인스턴스 생성
 app = Flask(__name__)
@@ -22,34 +23,35 @@ def fileUpload():
   if request.method == 'POST':
     global file
     file = request.files['file']
-
+    filename = file.filename
     # AWS S3 bucket
     s3 = s3_connection()
     s3.put_object(Bucket = BUCKET_NAME,Body = file,Key = file.filename,
     	ContentType = file.content_type)
+    s3path = "s3://{BUCKET_NAME}/"+filename
+    global s3url
+    s3url = f'https://{BUCKET_NAME}.s3.{LOCATION}.amazonaws.com/{filename}'
 
-    global path
-    path = "s3://siliconvalleyinternship2a22/"+file.filename
-    return jsonify({"success": True, "file": "Received", "name": file.filename, "path": path})  
+    calculateRatio()
+    return jsonify({"success": True, "file": "Received", "name": filename, "path": s3path})  
     
 
-# 받은 img 파일 -> Flask -> RabbitMQ -> AI -> Flask
+# 받은 img 파일 -> Flask -> RabbitMQ (-> Python -> AI -> Python) -> Flask
 def calculateRatio():
+  result = detectLandmarks.main()
+  print(result)
   return 0
 
 
 @app.route("/api/printResult", methods=["POST"])
 def printResult():
-  abilities = "xxx"
   if request.method == "POST":
-    abilities = "abc"
-  return abilities
+    return 'process'
 
 
 if __name__=="__main__":
   # host 등을 직접 지정하고 싶다면
   app.run(host="127.0.0.1", port="5000", debug=True)
-
 
 
 '''
