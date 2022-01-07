@@ -5,6 +5,7 @@ from connection import s3_connection
 from config import BUCKET_NAME, LOCATION
 import detectLandmarks
 
+
 #Flask 객체 인스턴스 생성
 app = Flask(__name__)
 # CORS(app)
