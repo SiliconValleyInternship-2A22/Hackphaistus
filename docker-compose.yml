@@ -34,8 +34,8 @@ services:
   rabbitmq:
     image : rabbitmq:3-management
     environment:
-     - RABBITMQ_DEFAULT_USER= 2a22user
-     - RABBITMQ_DEFAULT_PASS= hackphaistus
+     - RABBITMQ_DEFAULT_USER= 
+     - RABBITMQ_DEFAULT_PASS=
     ports:
      - "5672:5672"
      - "15672:15672"
@@ -53,7 +53,7 @@ services:
     ports:
       - "3306:3306" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
     environment: # -e 옵션
-      MYSQL_ROOT_PASSWORD: "dbof2a22162"  # MYSQL 패스워드 설정 옵션
+      MYSQL_ROOT_PASSWORD: ""  # MYSQL 패스워드 설정 옵션
     command: # 명령어 실행
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
