@@ -10,7 +10,7 @@ CMD ["nginx", "-g", "daemon off;"]
 EXPOSE 80
 
 # docker build -t nginx-img .
-# docker run --name nginx-con -it -p 8080:8080 --rm nginx-img
+# docker run -v nginx:/app --name nginx-con -it -p 8080:8080 --rm nginx-img
 
 #nginx-test
 #nginx-con
@@ -18,3 +18,7 @@ EXPOSE 80
 #docker start nginx-con
 
 #docker build --tag nginx-img .
+
+#/var/lib/docker/volumes/nginx/_data
+#/var/lib/docker/volumes/nginx/_data
+#docker run -v nginx:/app --name nginx-con -it -p 8080:8080 --rm nginx-img

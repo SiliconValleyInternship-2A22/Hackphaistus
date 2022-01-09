@@ -1,4 +1,4 @@
-version: "2.2"
+version: "3.3"
 
 services:
 
@@ -8,25 +8,13 @@ services:
     ports:
      - "3000:3000"
     container_name: frontend-con
-    volumes: 
-      - /var/lib/docker/volumes/our-vol/_data
-    network : hackphaistus
+    # volumes: 
+    #   - 'our-vol:/app'
+    # networks:
+    #   - hackphaistus
     restart: always
-    #environment:
-    #stdin_open: true
-
-  # mysql_db:
-  #   image: mysql:8.0
-  #   networks: app-tier
-  #   volumes:
-  #   ports:
-  #    - "3306:3306"
-  #   environment:
-  #    - MYSQL_DATABASE=app 
-  #    - MYSQL_USER= #채우기
-  #    - MYSQL_PASSWORD= 
-  #    - MYSQL_ROOT_PASSWORD=
-  #   command: 
+    image: run
+    stdin_open: true
 
   backend:
     build:
@@ -34,13 +22,14 @@ services:
     ports:
      - "5000:5000" 
     container_name: backend-con
-    networks: 
-     - hackphaistus
-    volumes:
-     - /var/lib/docker/volumes/backend/_data
+    # networks: 
+    #  - hackphaistus
+    # volumes:
+    #  - 'backend:/app'
+    image: run
     restart: always
-    #command: gunicorn -w 1 -b 0.0.0.0:5000 --timeout=300 run:app
-   
+    command: python manage.py runserver 0.0.0.0:8000
+    #gunicorn backend.wsgi --bind 0.0.0.0:8000
 
   rabbitmq:
     image : rabbitmq:3-management
@@ -50,10 +39,12 @@ services:
     ports:
      - "5672:5672"
      - "15672:15672"
-    networks: 
-     - hackphaistus
+    # networks: 
+    #  - hackphaistus
+    # volumes:
+    #   - 'rabbitmq:/app'
   #docker-compose 없이 사용할려면 #이미지설치 : docker pull rabbitmq:3-management
-  #컨테이너 실행: docker run -d -p 15672:15672 -p 5672:5672 --name  msa-rabbitmq rabbitmq:3-management                                   
+  #컨테이너 실행: docker run -v rabbitmq:/app -d -p 15672:15672 -p 5672:5672 --name  rabbitmq rabbitmq:3-management                                   
 
 
   db: # 서비스 명
@@ -62,15 +53,34 @@ services:
     ports:
       - "3306:3306" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
     environment: # -e 옵션
-      MYSQL_ROOT_PASSWORD: "password"  # MYSQL 패스워드 설정 옵션
+      MYSQL_ROOT_PASSWORD: "dbof2a22162"  # MYSQL 패스워드 설정 옵션
     command: # 명령어 실행
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - /var/lib/docker/volumes/mysql/_data # -v 옵션 (다렉토리 마운트 설정)
+    # volumes:
+    #   - mysql:/var/lib/docker/volumes/mysql/_data
+   
+  #   environment:
+  #    - MYSQL_DATABASE=app 
+  #    - MYSQL_USER= #채우기
+  #    - MYSQL_PASSWORD= 
+  #    - MYSQL_ROOT_PASSWORD=
+  #   command: 
 
 
-#docker-compose up -d
+
+  # networks: # 네트워크 이름
+  #   hackphaistus:
+  #     driver: bridge
+      
+
+  # volumes:
+  #   our-vol:
+  #   # backend:
+  #   rabbitmq:
+  #   # mysql:
+     
+#docker-compose up 
 
 #network
 # docker network : hackphaistus
@@ -80,18 +90,5 @@ services:
 #docker volume prune
 # sudo curl -L "https://github.com/docker/compose/releases/download/2.2.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
-# docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=dbof2a22162 --name mysql-con -v /var/lib/docker/volumes/mysql/_data mysql:latest --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+# docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password --name mysql-con -v /var/lib/docker/volumes/mysql/_data mysql:latest --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
 
-
-# docker exec -it mysql-con bash
-
-#mysql> CREATE USER '2a22'@'%' IDENTIFIED BY 'dbof2a22162';
-# Query OK, 0 rows affected (0.00 sec)
-
-# mysql> GRANT ALL PRIVILEGES ON *.* TO '2a22'@'%';
-# Query OK, 0 rows affected (0.00 sec)
-
-# mysql> flush privileges;
-# Query OK, 0 rows affected (0.00 sec)
-
-# mysql> quit

@@ -18,3 +18,5 @@ CMD ["npm", "start"]
 
 # docker build -t frontend-img .
 # docker run --name frontend-con -it -p 3000:3000 --rm frontend-img
+# docker run -v our-vol:/app --name frontend-con -it -p 3000:3000 --rm frontend-img
+# docker network connect nginx nginx-con
