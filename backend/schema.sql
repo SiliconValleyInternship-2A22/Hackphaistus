@@ -44,7 +44,7 @@ insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskil
 insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskill,credit) values (1,3,10,5,2,8,2,-4);
 
 # 인중 턱
-insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskill,credit) values (2,1,-5,-6,-4,10,10-10);
+insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskill,credit) values (2,1,-5,-6,-4,10,10,-10);
 insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskill,credit) values (2,2,5,10,0,0,5,0);
 insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskill,credit) values (2,3,10,7,4,-8,8,10);
 
