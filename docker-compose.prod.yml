@@ -55,16 +55,16 @@ services:
   nginx :
     image: nginx:latest
     ports:
-     - "8080:8080"
-  volumes:
-      - /var/lib/docker/volumes/nginx/_data
-  depend_on:
-  - frontend
-  - backend
-  networks:
+      - "8080:8080"
+    volumes:
+      - 'nginx:/app'
+    depend_on:
+      - frontend-con
+      - backend
+    networks:
       - hackphaistus
-  driver: bridge # 컨테이너를 bridge로 연결
-  restart: always
+    driver: bridge # 컨테이너를 bridge로 연결
+    restart: always
 
 
   db: # 서비스 명
