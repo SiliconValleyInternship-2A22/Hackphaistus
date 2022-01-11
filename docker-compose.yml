@@ -1,4 +1,4 @@
-version: "3.3"
+version: "3"
 
 services:
 
@@ -39,52 +39,36 @@ services:
     ports:
      - "5672:5672"
      - "15672:15672"
-    # networks: 
-    #  - hackphaistus
-    # volumes:
-    #   - 'rabbitmq:/app'
+    
   #docker-compose 없이 사용할려면 #이미지설치 : docker pull rabbitmq:3-management
-  #컨테이너 실행: docker run -v rabbitmq:/app -d -p 15672:15672 -p 5672:5672 --name  rabbitmq rabbitmq:3-management                                   
-
-
-  db: # 서비스 명
-    image: mysql # 사용할 이미지
-    container_name: mysql-con # 컨테이너 이름 설정
+  #컨테이너 실행: docker run -v rabbitmq:/app -d -p 15672:15672 -p 5672:5672 --name  rabbitmq rabbitmq:3-management
+  db:
+    image: mysql
+    container_name: mysql-con
     ports:
-      - "3306:3306" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
-    environment: # -e 옵션
-      MYSQL_ROOT_PASSWORD: ""  # MYSQL 패스워드 설정 옵션
-    command: # 명령어 실행
+      - "3306:3306"
+    environment: 
+      MYSQL_DATABASE: app 
+      MYSQL_ROOT_PASSWORD: ""
+    command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
-    # volumes:
-    #   - mysql:/var/lib/docker/volumes/mysql/_data
-   
+    volumes:
+      - mysql:/var/lib/docker/volumes/mysql/_data 
+  
+  #docker run --rm -d --name mysql-con -e MYSQL_ROOT_PASSWORD= -v mysql:/var/lib/docker/volumes/mysql/_data mysql
+  # docker exec -it mysql-con --password=
   #   environment:
   #    - MYSQL_DATABASE=app 
   #    - MYSQL_USER= #채우기
   #    - MYSQL_PASSWORD= 
   #    - MYSQL_ROOT_PASSWORD=
-  #   command: 
+  #   
 
-
-
-  # networks: # 네트워크 이름
-  #   hackphaistus:
-  #     driver: bridge
-      
-
-  # volumes:
-  #   our-vol:
-  #   # backend:
-  #   rabbitmq:
-  #   # mysql:
+  volumes:
+    mysql:
      
-#docker-compose up 
-
-#network
-# docker network : hackphaistus
-# docker exec frontend-con ping backend-con
+#docker-compose up -d
 
 #volume
 #docker volume prune
