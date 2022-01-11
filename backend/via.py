@@ -78,16 +78,14 @@ def calculateRatio(url):
     lengthA = (n_l_e -  n_l_s) 
     lengthB = (l_c_e -  l_c_s) 
     standard = min(lengthA,lengthB)
-    num = round((float(max(lengthA,lengthB))/standard),1)
+    num = round(float(max(lengthA,lengthB))/standard)
 
     #print ("2. 인중-턱 비율 확인: ", num)       
 
-    if num > 2.8: 
+    if num > 3: 
         num = 3
-    elif num < 2.1:
+    elif num < 2.0:
         num = 1
-    else:
-        num = 2
     cursor = db.cursor()
     sql = '''
 	SELECT wisdom, charming, leadership, passion, socialskill, credit 
@@ -147,7 +145,7 @@ def calculateRatio(url):
     standard = min(lengthA,lengthB)
     num = round((float(max(lengthA,lengthB))/standard),1)
     #print("4. 입술너비 비율 : ", num)  
-    if num > 2.5: 
+    if num < 2.5: 
         num = 1
     else:
         num = 2       
@@ -164,7 +162,7 @@ def calculateRatio(url):
     skills[3] += int(tlist[0][3])
     skills[4] += int(tlist[0][4])
     skills[5] += int(tlist[0][5])
-    print("최종 스탯 : ",skills)
+    #print("최종 스탯 : ",skills)
 
     # pil [67, 70, 55, 52, 67, 68]
     
