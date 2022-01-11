@@ -44,9 +44,10 @@ def calculateRatio(url):
     lengthB = (e_e_e -  e_e_s) 
     standard = min(lengthA,lengthB)
     num = round((float(max(lengthA,lengthB))/standard),1)
-    if num > 4.7:
+    #print( "1. 미간 비율 : ", num)
+    if num > 3.9:
           num = 3
-    elif num < 4.2:
+    elif num < 3.6:
           num = 1
     else:
           num = 2
@@ -64,6 +65,7 @@ def calculateRatio(url):
     skills[3] += int(tlist[0][3])
     skills[4] += int(tlist[0][4])
     skills[5] += int(tlist[0][5])
+    #print("1번 후 미간 스탯 확인 : ",skills)   
 
 
     # 인중 - 턱
@@ -76,11 +78,16 @@ def calculateRatio(url):
     lengthA = (n_l_e -  n_l_s) 
     lengthB = (l_c_e -  l_c_s) 
     standard = min(lengthA,lengthB)
-    num = round(float(max(lengthA,lengthB))/standard)
-    if num > 3: 
-        num == 3
-    elif num < 1:
-        num == 1
+    num = round((float(max(lengthA,lengthB))/standard),1)
+
+    #print ("2. 인중-턱 비율 확인: ", num)       
+
+    if num > 2.8: 
+        num = 3
+    elif num < 2.1:
+        num = 1
+    else:
+        num = 2
     cursor = db.cursor()
     sql = '''
 	SELECT wisdom, charming, leadership, passion, socialskill, credit 
@@ -94,6 +101,7 @@ def calculateRatio(url):
     skills[3] += int(tlist[0][3])
     skills[4] += int(tlist[0][4])
     skills[5] += int(tlist[0][5])
+    #print("2번 후 인중-턱 스탯 확인 : ",skills)   
 
 
     # 입술너비
@@ -104,10 +112,9 @@ def calculateRatio(url):
     upper_lips = min(lips[2])
     middle_lips = (tmp[5]+tmp[6])/2
     lower_lips = max(lips[2])
-
     lengthA = (middle_lips-upper_lips) 
     lengthB = (lower_lips-middle_lips)
-    # print(lengthA, lengthB)
+    #print("3. 윗입술 , 아랫입술 높이 : ", lengthA, lengthB) 
     if lengthA <= lengthB:
         num = 2
     else:
@@ -125,6 +132,8 @@ def calculateRatio(url):
     skills[3] += int(tlist[0][3])
     skills[4] += int(tlist[0][4])
     skills[5] += int(tlist[0][5])
+    #print("3번 후 입술-스탯 확인: ",skills)    
+
     
     # 입술 너비 - 턱 너비
     # 입술 양끝 x값 비교
@@ -134,13 +143,14 @@ def calculateRatio(url):
     lengthA = (lips_e -  lips_s)
     # 턱을 어떤 기준으로 하면 좋을까... 일단 5번째꺼가 기준으로!
     lengthB = face[1][12]-face[1][4]
-    print(lengthA, lengthB)
+    #print(lengthA, lengthB)
     standard = min(lengthA,lengthB)
-    num = round(float(max(lengthA,lengthB))/standard)
-    if num > 2.8: 
-        num == 1
+    num = round((float(max(lengthA,lengthB))/standard),1)
+    #print("4. 입술너비 비율 : ", num)  
+    if num > 2.5: 
+        num = 1
     else:
-        num == 2       
+        num = 2       
     cursor = db.cursor()
     sql = '''
 	SELECT wisdom, charming, leadership, passion, socialskill, credit 
@@ -154,6 +164,9 @@ def calculateRatio(url):
     skills[3] += int(tlist[0][3])
     skills[4] += int(tlist[0][4])
     skills[5] += int(tlist[0][5])
+    print("최종 스탯 : ",skills)
 
     # pil [67, 70, 55, 52, 67, 68]
+    
     return skills
+calculateRatio("abc")
