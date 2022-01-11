@@ -167,4 +167,3 @@ def calculateRatio(url):
     # pil [67, 70, 55, 52, 67, 68]
     
     return skills
-calculateRatio("abc")

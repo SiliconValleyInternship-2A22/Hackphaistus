@@ -1,7 +1,7 @@
 # app.py
 from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
+#from flask_sqlalchemy import SQLAlchemy
 import pymysql
 from flask_restx import Resource, Api, fields, reqparse  # 추가한 부분
 from werkzeug.datastructures import FileStorage
@@ -13,12 +13,11 @@ from via import calculateRatio
 app = Flask(__name__)
 
 #추가 한 내용
-api = Api(app,version='1.0',title='Hackphaistus API',description='hackphaistus REST API 문서')
-face = api.namespace('api/face',description='관상 관련 api 목록')
-ns = api.namespace('api/main',description='main 관련 api 목록')  
-parser = face.parser()
-file_parser = face.parser()
-result_parser = face.parser()
+api = Api(app,version='1.0',title='Hackphaistus API',description='Hackphaistus REST API 문서')
+ns = api.namespace('api',description='Hackphaistus API')  
+parser = ns.parser()
+file_parser = ns.parser()
+result_parser = ns.parser()
 
 # CORS(app)
 CORS(app, resources={r'*':{'origins': 'http://localhost:3000'}})
@@ -36,59 +35,52 @@ db = pymysql.connect(host='localhost',
 
 @ns.route('/')                 
 class Main(Resource):
-    def post(self):                             
-        return render_template('index.html');
+  def post():
+    return render_template('index.html');
 
-
-@ns.route('/checkCors')        
+@ns.route('/checkCors', methods = ['POST'])        
 class setBtn(Resource):
-    def post(self):
-        return 'Server has checked your request';
+  def post():
+    return 'Server has checked your request';
 
-
-@face.route('/fileUpload')
+@ns.route('/fileUpload', methods = ['POST'])
 class fileUpload(Resource):
+  file_parser.add_argument('file',type=FileStorage,required=True,location='files' ,help="얼굴 정면 사진 업로드")  
 
-    file_parser.add_argument('file',type=FileStorage,required=True,location='files' ,help="얼굴 정면 사진 업로드")  
+  @ns.expect(file_parser)
+  @ns.response(201, "사진 등록 성공")
+  @ns.response(400, "잘못된 요청")
+  @ns.response(500, "서버에서 에러 발생")
 
-    @face.expect(file_parser)
-    @face.response(201, "사진 등록 성공")
-    @face.response(400, "잘못된 요청")
-    @face.response(500, "서버에서 에러 발생")
+  def post(self):
+    args = file_parser.parse_args()
+    global file
+    file = args['file']
+    filename = file.filename
+    # AWS S3 bucket
+    s3 = s3_connection()
+    s3.put_object(Bucket = BUCKET_NAME,Body = file,Key = file.filename,ContentType = file.content_type)
+    dataUrl = [BUCKET_NAME,filename,filename]
+    #s3url = f'https://{BUCKET_NAME}.s3.{LOCATION}.amazonaws.com/{filename}'
+    skills = sendToDetect(dataUrl)
+    #print(skills)
+    return jsonify({"skills": skills})
+    #return jsonify({"skills":[67, 70, 55, 52, 67, 68]})  
 
-    def post(self):
-
-        args = file_parser.parse_args()
-        global file
-        file = args['file']
-        filename = file.filename
-        # AWS S3 bucket
-        s3 = s3_connection()
-        s3.put_object(Bucket = BUCKET_NAME,Body = file,Key = file.filename,ContentType = file.content_type)
-        dataUrl = [BUCKET_NAME,filename,filename]
-        #s3url = f'https://{BUCKET_NAME}.s3.{LOCATION}.amazonaws.com/{filename}'
-        skills = sendToDetect(dataUrl)
-        print(skills)
-        return jsonify({"skills": skills})
-        #return jsonify({"skills":[67, 70, 55, 52, 67, 68]})  
-
-    
 # 받은 img 파일 -> Flask -> RabbitMQ (-> Python -> AI -> Python) -> Flask
 def sendToDetect(url):
   skills = calculateRatio(url)
   return skills
 
-
-@face.route('/printResult')
+@ns.route('/printResult')
 class printResult(Resource):
+  @ns.expect(result_parser)
+  @ns.response(201, "스탯 정보 가져옴")
+  @ns.response(400, "잘못된 요청")
+  @ns.response(500, "서버에서 에러 발생")
 
-    @face.expect(result_parser )
-    @face.response(201, "스탯 정보 가져옴")
-    @face.response(400, "잘못된 요청")
-    @face.response(500, "서버에서 에러 발생")
-
-    def post(self):       #get..아닌가용...?
-           return 'process'
+  def post(self):     
+    return 'process'
 
 
 if __name__=="__main__":
@@ -96,8 +88,6 @@ if __name__=="__main__":
   app.run(host="127.0.0.1", port="5000", debug=True)
 
 
-
-#################################
 """
 # app.py
 from flask import Flask, request, render_template, jsonify
