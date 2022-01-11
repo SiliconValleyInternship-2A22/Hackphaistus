@@ -6,22 +6,21 @@ ENV PYTHONDONTWRITEBYTECODE 1
 # This keeps Python from buffering stdin/stdout
 ENV PYTHONUNBUFFERED 1
 
-EXPOSE 5000
-
 WORKDIR /backend
-COPY . ./
 
-# RUN pip install -U python
+RUN pip install --upgrade pip
 RUN pip install -U flask
 RUN pip install -U flask-cors
-RUN pip install --upgrade pip
+RUN pip install Flask-Session
+COPY requirements.txt /backend/
+# RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
+COPY . ./
+# COPY . /app
 
-EXPOSE 5000
-CMD [ "python", "wsgi.ini", "app.py"]
 
 # docker build -t backend-img .
 # docker run --name backend-con -it -p 5000:5000 --rm backend-img
 
 #/var/lib/docker/volumes/backend/_data
-# docker run -v our-vol:/app --name one busybox touch /app/test.txt
+# docker run -v backend:/app --name one busybox touch /app/test.txt
