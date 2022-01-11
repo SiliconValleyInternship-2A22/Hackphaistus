@@ -18,12 +18,19 @@ const App = () => {
     })
     .catch(err=>{console.log('Failed to send img file to server');})
   }
+  
+  const getImg = () => {
+    axios.post("http://localhost:5000/api/printResult").then(response=>{
+      console.log(response.data);
+    })
+  }
 
   return (
     <div className='App'>
       {img == null ? <p></p> :<img src={fileUrl}/>}
       <input id="profile-upload" type="file" accept="image/*" onChange={uploadImg}/>
-      <button onClick={postImg}>관상 결과 보기</button>
+      <button onClick={postImg}>관상 보기</button>
+      <button onClick={getImg}>결과 출력</button>
     </div>
   );
 }
