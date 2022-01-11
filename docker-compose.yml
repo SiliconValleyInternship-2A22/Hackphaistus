@@ -33,9 +33,8 @@ services:
 
   rabbitmq:
     image : rabbitmq:3-management
-    environment:
-     - RABBITMQ_DEFAULT_USER= 
-     - RABBITMQ_DEFAULT_PASS=
+    env_file :
+      - ./envs/rabbitmq
     ports:
      - "5672:5672"
      - "15672:15672"
@@ -49,21 +48,16 @@ services:
       - "3306:3306"
     environment: 
       MYSQL_DATABASE: app 
-      MYSQL_ROOT_PASSWORD: ""
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_ci
+    env_file :
+      - ./envs/mysql
     volumes:
       - mysql:/var/lib/docker/volumes/mysql/_data 
   
   #docker run --rm -d --name mysql-con -e MYSQL_ROOT_PASSWORD= -v mysql:/var/lib/docker/volumes/mysql/_data mysql
-  # docker exec -it mysql-con --password=
-  #   environment:
-  #    - MYSQL_DATABASE=app 
-  #    - MYSQL_USER= #채우기
-  #    - MYSQL_PASSWORD= 
-  #    - MYSQL_ROOT_PASSWORD=
-  #   
+  # docker exec -it mysql-con --password=   
 
   volumes:
     mysql:
