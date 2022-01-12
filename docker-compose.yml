@@ -1,4 +1,4 @@
-version: “3”
+version: "3"
 services:
 
   frontend:
@@ -35,39 +35,46 @@ services:
     # python manage.py runserver 0.0.0.0:5000
     #flask run --host=0.0.0.0 --port=5000
 
-  # rabbitmq:
-  #   image : rabbitmq:3-management
-  #   env_file :
-  #     - ./envs/rabbitmq
-  #   ports:
-  #    - "5672:5672"
-  #    - "15672:15672"
+  rabbitmq:
+    image : rabbitmq:3-management
+    env_file :
+      - ./envs/rabbitmq
+    ports:
+     - "5672:5672"
+     - "15672:15672"
+    volumes:
+      - data_rabbitmq:/var/lib/rabbitmq
     
   #docker-compose 없이 사용할려면 #이미지설치 : docker pull rabbitmq:3-management
   #컨테이너 실행: docker run -v rabbitmq:/app -d -p 15672:15672 -p 5672:5672 --name  rabbitmq rabbitmq:3-management
-  # db:
-  #   image: mysql
-  #   container_name: mysql-con
-  #   ports:
-  #     - "3306:3306"
-  #   environment: 
-  #     MYSQL_DATABASE: app 
-  #   command:
-  #     - --character-set-server=utf8mb4
-  #     - --collation-server=utf8mb4_unicode_ci
-  #   env_file :
-  #     - ./envs/mysql
-    # volumes:
-    #   - mysql:/var/lib/docker/volumes/mysql/_data 
+  db:
+    image: mysql
+    container_name: mysql-con
+    ports:
+      - "3306:3306"
+    environment: 
+      MYSQL_DATABASE: app 
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    env_file :
+      - ./envs/mysql
+    volumes:
+      - data_mysql:/var/lib/mysql
   
   #docker run --rm -d --name mysql-con -e MYSQL_ROOT_PASSWORD= -v mysql:/var/lib/docker/volumes/mysql/_data mysql
   # docker exec -it mysql-con --password=   
 
-  # volumes:
-  #   mysql:
+volumes:
+  data_mysql:
+  data_rabbitmq:
      
-#docker-compose up -d
+#docker-compose up --build
 #volume
 #docker volume prune
 # sudo curl -L “https://github.com/docker/compose/releases/download/2.2.3/docker-compose-$(uname -s)-$(uname -m)” -o /usr/local/bin/docker-compose
 # docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password --name mysql-con -v /var/lib/docker/volumes/mysql/_data mysql:latest --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+
+#docker inspect --format="{{ .HostConfig.Binds }}" mysql-con
+
+#/var/lib/docker
