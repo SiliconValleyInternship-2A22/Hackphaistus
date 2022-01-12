@@ -59,4 +59,4 @@ insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskil
 
 #눈썹 가로 세로
 insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskill,credit) values (5,1,2,9,8,2,9,3);
-insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskill,credit) values (5,1,8,-2,3,6,1,9);
+insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskill,credit) values (5,2,8,-2,3,6,1,9);

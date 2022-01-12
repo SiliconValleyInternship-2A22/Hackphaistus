@@ -1,19 +1,19 @@
 version: “3”
 services:
 
-  # frontend:
-  #   build: 
-  #     context: ./frontend 
-  #   ports:
-  #    - "3000:3000"
-  #   container_name: frontend-con
-  #   # volumes: 
-  #   #   - 'our-vol:/app'
-  #   # networks:
-  #   #   - hackphaistus
-  #   restart: always
-  #   image: run
-  #   stdin_open: true
+  frontend:
+    build: 
+      context: ./frontend 
+    ports:
+     - "3000:3000"
+    container_name: frontend-con
+    # volumes: 
+    #   - 'our-vol:/app'
+    # networks:
+    #   - hackphaistus
+    restart: always
+    image: run
+    stdin_open: true
 
   backend:
     build:
@@ -28,7 +28,7 @@ services:
       - 5000
     # image: run
     # restart: always
-    command: gunicorn backend.wsgi --bind 0.0.0.0:5000
+    command: flask run --host=0.0.0.0 --port=5000
     volumes:
       - ./backend:/usr/local/app/
     #gunicorn backend.wsgi --bind 0.0.0.0:5000
