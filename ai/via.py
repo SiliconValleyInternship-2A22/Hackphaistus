@@ -1,7 +1,6 @@
 import pymysql
 import detectLandmarks
 import pika
-import time
 db = pymysql.connect(host='localhost', port=3306, user='root', passwd='1234', db='hackphaistus',
                      charset='utf8')
 
@@ -9,17 +8,24 @@ connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost')
 channel = connection.channel()
 channel.queue_declare(queue='task_queue', durable=True)
 url = []
+result = []
 print(' [*] Waiting for messages. To exit press CTRL+C')
+
+
+def setResult(r):
+    global result
+    result = r
+
+def getResult():
+    return result
 
 def callback(ch, method, properties, body):
     message = body.decode()
     print("너 받은 거 맞아?",message)
     ch.basic_ack(delivery_tag=method.delivery_tag)
     url = message.split("-")
-    result = calculateRatio(url)
-    print(result)
-    #receiveFromDetect(result)
-    
+    r = calculateRatio(url)
+    setResult(r)
     
 def checkRabbitMQ():
     channel.basic_qos(prefetch_count=1)
