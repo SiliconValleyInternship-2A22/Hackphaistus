@@ -2,65 +2,70 @@ version: "3"
 
 services:
 
-  frontend:
-    build: 
-      context: ./frontend 
-    ports:
-     - "3000:3000"
-    container_name: frontend-con
-    # volumes: 
-    #   - 'our-vol:/app'
-    # networks:
-    #   - hackphaistus
-    restart: always
-    image: run
-    stdin_open: true
+  # frontend:
+  #   build: 
+  #     context: ./frontend 
+  #   ports:
+  #    - "3000:3000"
+  #   container_name: frontend-con
+  #   # volumes: 
+  #   #   - 'our-vol:/app'
+  #   # networks:
+  #   #   - hackphaistus
+  #   restart: always
+  #   image: run
+  #   stdin_open: true
 
   backend:
     build:
       context: ./backend
     ports:
      - "5000:5000" 
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_APP: ./app.py
     container_name: backend-con
-    # networks: 
-    #  - hackphaistus
-    # volumes:
-    #  - 'backend:/app'
-    image: run
-    restart: always
-    command: python manage.py runserver 0.0.0.0:8000
-    #gunicorn backend.wsgi --bind 0.0.0.0:8000
+    expose:
+      - 5000
+    # image: run
+    # restart: always
+    command: gunicorn backend.wsgi --bind 0.0.0.0:5000
+    volumes:
+      - ./backend:/usr/local/app/
+    #gunicorn backend.wsgi --bind 0.0.0.0:5000
+    # python manage.py runserver 0.0.0.0:5000
+    #flask run --host=0.0.0.0 --port=5000
 
-  rabbitmq:
-    image : rabbitmq:3-management
-    env_file :
-      - ./envs/rabbitmq
-    ports:
-     - "5672:5672"
-     - "15672:15672"
+  # rabbitmq:
+  #   image : rabbitmq:3-management
+  #   env_file :
+  #     - ./envs/rabbitmq
+  #   ports:
+  #    - "5672:5672"
+  #    - "15672:15672"
     
   #docker-compose 없이 사용할려면 #이미지설치 : docker pull rabbitmq:3-management
   #컨테이너 실행: docker run -v rabbitmq:/app -d -p 15672:15672 -p 5672:5672 --name  rabbitmq rabbitmq:3-management
-  db:
-    image: mysql
-    container_name: mysql-con
-    ports:
-      - "3306:3306"
-    environment: 
-      MYSQL_DATABASE: app 
-    command:
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-    env_file :
-      - ./envs/mysql
-    volumes:
-      - mysql:/var/lib/docker/volumes/mysql/_data 
+  # db:
+  #   image: mysql
+  #   container_name: mysql-con
+  #   ports:
+  #     - "3306:3306"
+  #   environment: 
+  #     MYSQL_DATABASE: app 
+  #   command:
+  #     - --character-set-server=utf8mb4
+  #     - --collation-server=utf8mb4_unicode_ci
+  #   env_file :
+  #     - ./envs/mysql
+    # volumes:
+    #   - mysql:/var/lib/docker/volumes/mysql/_data 
   
   #docker run --rm -d --name mysql-con -e MYSQL_ROOT_PASSWORD= -v mysql:/var/lib/docker/volumes/mysql/_data mysql
   # docker exec -it mysql-con --password=   
 
-  volumes:
-    mysql:
+  # volumes:
+  #   mysql:
      
 #docker-compose up -d
 
