@@ -10,7 +10,7 @@ from config import BUCKET_NAME, LOCATION
 import pika
 import sys
 sys.path.append('../ai')
-from via import checkRabbitMQ
+from via import checkRabbitMQ, getResult
 
 #Swagger
 connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
@@ -65,9 +65,8 @@ class fileUpload(Resource):
     s3.put_object(Bucket = BUCKET_NAME,Body = file,Key = file.filename,ContentType = file.content_type)
     dataUrl = BUCKET_NAME+"-"+filename+"-"+filename
     #s3url = f'https://{BUCKET_NAME}.s3.{LOCATION}.amazonaws.com/{filename}'
-    skills = sendToDetect(dataUrl)
-    return jsonify({"skills": skills})
-    #return jsonify({"skills":[67, 70, 55, 52, 67, 68]})  
+    sendToDetect(dataUrl)
+    connection.close()
 
 # 받은 img 파일 -> Flask -> RabbitMQ (-> Python -> AI -> Python) -> Flask
 def sendToDetect(url):
@@ -81,10 +80,6 @@ def sendToDetect(url):
   #return skills
   #connection.close()
 
-def receiveFromDetect(r):
-  global result
-  result = r
-
 @ns.route('/printResult')
 class printResult(Resource):
   @ns.expect(result_parser)
@@ -93,7 +88,7 @@ class printResult(Resource):
   @ns.response(500, "서버에서 에러 발생")
 
   def post(self):     
-    return result
+    return getResult()
 
 if __name__=="__main__":
   # host 등을 직접 지정하고 싶다면
