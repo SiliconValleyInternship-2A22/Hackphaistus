@@ -21,6 +21,7 @@ insert into ratio(feature1,feature2,ratio1,ratio2) values ('eyes','cheekbones',1
 insert into ratio(feature1,feature2,ratio1,ratio2) values ('philanthropy','chin',1,2.0);
 insert into ratio(feature1,feature2,ratio1,ratio2) values ('upperlip','lowerlip',1,1.5);
 insert into ratio(feature1,feature2,ratio1,ratio2) values ('lips','jaw',1,2.5);
+insert into ratio(feature1,feature2,ratio1,ratio2) values ('eyebrowX','eyebrowY',1,5.2);
 
 # 지혜 매력 통솔력 열정 사회성 신뢰도
 
@@ -56,3 +57,6 @@ insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskil
 insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskill,credit) values (4,1,9,10,10,10,10,8);
 insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskill,credit) values (4,2,6,-4,-4,5,5,6);
 
+#눈썹 가로 세로
+insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskill,credit) values (5,1,2,9,8,2,9,3);
+insert into abilities(ratio_id,ver,wisdom,charming,leadership,passion,socialskill,credit) values (5,2,8,-2,3,6,1,9);
