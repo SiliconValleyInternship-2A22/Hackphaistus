@@ -75,8 +75,3 @@ volumes:
 #docker volume prune
 # sudo curl -L “https://github.com/docker/compose/releases/download/2.2.3/docker-compose-$(uname -s)-$(uname -m)” -o /usr/local/bin/docker-compose
 # docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password --name mysql-con -v /var/lib/docker/volumes/mysql/_data mysql:latest --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-
-#docker inspect --format="{{ .HostConfig.Binds }}" mysql-con
-
-#/var/lib/docker
-
