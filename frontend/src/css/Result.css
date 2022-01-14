@@ -1,0 +1,13 @@
+.defalutBGC3{
+    width: 100%;
+    height: 100vh;
+    background-color: #040404;
+
+    padding-top: 260px;
+    display: inline-block;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+}
