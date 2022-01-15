@@ -3,11 +3,120 @@
     height: 100vh;
     background-color: #040404;
 
-    padding-top: 260px;
     display: inline-block;
+}
+
+.firstpart{
+    clear: right;
+    width: 85vw;
+    height: 36%;
 
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-content: center;
+
+    margin: auto;
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.resultImg{
+    width: 200px;
+    height: 200px;
+    border-radius: 150px;
+    background-color: #818181;
+    margin-right: 27px;
+    margin-top: 10px;
+}
+
+.overView{
+    width: 43%;
+    height: 100%;
+    border-radius: 16px;
+
+    background-color: #171717;
+}
+
+.topValue{
+    width: 30%;
+    height: 100%;
+    border-radius: 16px;
+    background-color: #171717;
+}
+
+.secondpart{
+    margin: auto;
+    width: 100vw;
+    height: 65%;
+    background-color: #FE5657;
+    margin-top: 150px;
+
+}
+
+.containerWrap{
+    width: 85vw;
+    height: 115%;
+    background-color: transparent;
+
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: auto;
+
+}
+
+.statContainer{
+    width: 31%;
+    height: 45%;
+    background-color: #060606;
+    border: solid 2px #2C2C2C;
+    border-radius: 16px;
+
+    margin-top: -70px;
+}
+
+.saveBtn{
+    width:130px;
+    height: 32px;
+    float: right;
+
+    color: #333;
+    background-color: #f2f2f2;
+
+    border-radius: 18px;
+    border: none;
+
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 16px;
+
+    margin-top: 80px;
+}
+
+.restartBtn{
+    width: 130px;
+    height: 32px;
+    float: right;
+
+    color: #f2f2f2;
+
+    border-radius: 18px;
+    border: solid 1.5px #f2f2f2;
+    background-color: transparent;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    margin-right: 7.5vw;
+    margin-top: 80px;
+}
+
+.lastPart {
+    width: 100%;
+    height: 36vh;
+    background-color: #040404;
+    margin: 0;
+    padding: 0;
+    border: none;
 }
