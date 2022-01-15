@@ -47,7 +47,7 @@
 .secondpart{
     margin: auto;
     width: 100vw;
-    height: 65%;
+    height: 60%;
     background-color: #FE5657;
     margin-top: 150px;
 
@@ -55,7 +55,7 @@
 
 .containerWrap{
     width: 85vw;
-    height: 115%;
+    height: 110%;
     background-color: transparent;
 
     display: flex;

@@ -114,7 +114,7 @@
     margin-right: 13%;
 
     width: 13vw;
-    height: 4.2vh;
+    height: 4.5vh;
 
     border: none;
     border-radius: 6vh;
@@ -125,6 +125,8 @@
     font-size: 10px;
     font-weight: 600;
     text-shadow: 2px 2px 4px #070707 25%;
+
+    padding: auto;
 }
 
 .subCon_B{
