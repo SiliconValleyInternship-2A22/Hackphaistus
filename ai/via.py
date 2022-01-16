@@ -1,12 +1,24 @@
+from flask import Flask, request, render_template, jsonify, redirect, url_for
+from flask_cors import CORS
 import pymysql
-import detectLandmarks
+# from connection import s3_connection
+# from config import BUCKET_NAME, LOCATION
+# import detectLandmarks
 import detectLandmarks2
 import pika
-db = pymysql.connect(host='localhost', port=3306, user='root', passwd='1234', db='hackphaistus',
-                     charset='utf8')
-connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-channel = connection.channel()
-channel.queue_declare(queue='task_queue', durable=True)
+
+# Flask 객체 인스턴스 생성
+via = Flask(__name__)
+# CORS(app)
+CORS(via, resources={r'*':{'origins': 'http://localhost:5000'}})
+# MySQL
+db = pymysql.connect(host='db',port=3306,user='2a22',passwd='162girls',db='Hackphaistus',charset='utf8')
+# RabbitMQ
+# connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+# channel = connection.channel()
+# channel.queue_declare(queue='task_queue', durable=True)
+
+
 url = []
 result = []
 print(' [*] Waiting for messages. To exit press CTRL+C')
@@ -18,18 +30,18 @@ def setResult(r):
 def getResult():
     return result
 
-def callback(ch, method, properties, body):
-    message = body.decode()
-    print("너 받은 거 맞아?",message)
-    ch.basic_ack(delivery_tag=method.delivery_tag)
-    url = message.split("-")
-    r = calculateRatio(url)
-    setResult(r)
+# def callback(ch, method, properties, body):
+#     message = body.decode()
+#     print("너 받은 거 맞아?",message)
+#     ch.basic_ack(delivery_tag=method.delivery_tag)
+#     url = message.split("-")
+#     r = calculateRatio(url)
+#     setResult(r)
     
-def checkRabbitMQ():
-    channel.basic_qos(prefetch_count=1)
-    channel.basic_consume(queue='task_queue', on_message_callback=callback)
-    channel.start_consuming()   
+#def checkRabbitMQ():
+    # channel.basic_qos(prefetch_count=1)
+    # channel.basic_consume(queue='task_queue', on_message_callback=callback)
+    # channel.start_consuming()   
 
 skills = [50,50,50,50,50,50]
 
@@ -169,8 +181,6 @@ def calculateRatio(url):
         num = 1
     updateSkills(2,num)
     
-
-
     print("최종 : ",skills)    
     # pil 최종 :  [79, 73, 61, 66, 73, 84]
     return skills
@@ -187,3 +197,10 @@ def calculateRatio(url):
 2. 인중-턱 비율 확인:  2
 최종 :  [78, 90, 61, 62, 86, 74]
 '''
+@via.route("/api/printResult", methods=["POST"])
+def printResult():
+  if request.method == "POST":
+    return 'process'
+
+if __name__=="__main__":
+  via.run(host="127.0.0.1", port="5005", debug=True)
