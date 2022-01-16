@@ -1,11 +1,15 @@
 import dlib
 from skimage import io
 import matplotlib.pyplot as plt
-import os
 import sys
+import cv2
 sys.path.append('../backend')
 from connection import s3_connection
 s3 = s3_connection()
+
+def drawPlot(image,xy,radius,color,thickness):
+    image = cv2.circle(image, xy, radius, color, thickness)
+    return image
 
 def main(url):
     predictor = dlib.shape_predictor("../ai/shape_predictor_68_face_landmarks.dat")    
@@ -17,10 +21,10 @@ def main(url):
     faces = detector(img)
     #win.add_overlay(faces) # 얼굴 박스
     input_img = io.imread(url[2])
-    fig = plt.figure(figsize=plt.figaspect(1))
-    ax = fig.add_subplot(111)
-    ax.imshow(input_img)
 
+    # Add plot on the image by using CV2
+    path = r'C:\pj2022\Eyecade\backend\pil.jpg'
+    image = cv2.imread(path)
 
     featureName = ['face', 'eyebrow1', 'eyebrow2', 'nose', 'nostril', 'eye1', 'eye2', 'lips', 'teeth']
     featureX = []
@@ -40,8 +44,9 @@ def main(url):
             part = part[1:-1].split(',')
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
-            ax.plot(int(part[0]),int(part[1]),'.',color='red') 
-
+            center_coordinates = (int(part[0]),int(part[1]))
+            image = drawPlot(image, center_coordinates, 10, (0,0,255), -1)
+            
         '''face = (329, 713) (334, 783) (344, 851) (355, 921) (376, 990) (414, 1049) (469, 1100)(534, 1137)
         (610, 1148)(684, 1135)(746, 1095)(799, 1047)(834, 989)(855, 922)(865, 855)(876, 788)(880, 722)'''
         '''[329, 334, 344, 355, 376, 414, 469, 534, 610, 684, 746, 799, 834, 855, 865, 876, 880]
@@ -59,7 +64,8 @@ def main(url):
             part = part[1:-1].split(',')
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
-            ax.plot(int(part[0]),int(part[1]),'o-',color='blue')
+            center_coordinates = (int(part[0]),int(part[1]))
+            image = drawPlot(image, center_coordinates, 10, (10,255,0), -1)
             '''[383, 421, 474, 529, 582] [655, 624, 615, 623, 640]'''
         featureX.append(tmpX)
         featureY.append(tmpY)
@@ -75,7 +81,8 @@ def main(url):
             part = part[1:-1].split(',')
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1])) 
-            ax.plot(int(part[0]),int(part[1]),'.-',color='blue')
+            center_coordinates = (int(part[0]),int(part[1]))
+            image = drawPlot(image, center_coordinates, 10, (10,255,0), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -90,6 +97,8 @@ def main(url):
             part = part[1:-1].split(',')
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
+            center_coordinates = (int(part[0]),int(part[1]))
+            image = drawPlot(image, center_coordinates, 10, (10,200,10), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -104,6 +113,8 @@ def main(url):
             part = part[1:-1].split(',')
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
+            center_coordinates = (int(part[0]),int(part[1]))
+            image = drawPlot(image, center_coordinates, 10, (10,200,10), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -118,6 +129,8 @@ def main(url):
             part = part[1:-1].split(',')
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
+            center_coordinates = (int(part[0]),int(part[1]))
+            image = drawPlot(image, center_coordinates, 10, (255,255,0), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -131,6 +144,8 @@ def main(url):
             part = part[1:-1].split(',')
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
+            center_coordinates = (int(part[0]),int(part[1]))
+            image = drawPlot(image, center_coordinates, 10, (255,255,0), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -144,6 +159,8 @@ def main(url):
             part = part[1:-1].split(',')
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
+            center_coordinates = (int(part[0]),int(part[1]))
+            image = drawPlot(image, center_coordinates, 10, (150,150,0), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -158,12 +175,14 @@ def main(url):
             part = part[1:-1].split(',')
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
+            center_coordinates = (int(part[0]),int(part[1]))
+            image = drawPlot(image, center_coordinates, 10, (150,150,0), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
     result = [featureName,featureX,featureY]
     print(result)
-    os.remove(url[2])
-    plt.savefig('_result.png') # 사진 점선만    
+    cv2.imwrite("target.jpg", image)
+    #os.remove(url[2])
     #win.wait_until_closed()
     return result

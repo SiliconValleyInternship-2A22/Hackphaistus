@@ -8,13 +8,13 @@ from connection import s3_connection
 from config import BUCKET_NAME, LOCATION
 import pika
 import sys
-#sys.path.append('../ai')
-#from via import checkRabbitMQ, getResult
+sys.path.append('../ai')
+from via import checkRabbitMQ, getResult
 
 # RabbitMQ
-# connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-# channel = connection.channel()
-# channel.queue_declare(queue='task_queue', durable=True)
+connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
+channel = connection.channel()
+channel.queue_declare(queue='task_queue', durable=True)
 
 # Flask 객체 인스턴스 생성
 app = Flask(__name__)
@@ -28,13 +28,13 @@ result_parser = ns.parser()
 
 # CORS(app)
 CORS(app, resources={r'*':{'origins': 'http://localhost:3000'}})
-# MySQL
-# db = pymysql.connect(host='localhost',
-#                      port=3306,
-#                      user='root',
-#                      passwd='1234',
-#                      db='hackphaistus',
-#                      charset='utf8')
+#MySQL
+db = pymysql.connect(host='localhost',
+                     port=3306,
+                     user='root',
+                     passwd='1234',
+                     db='hackphaistus',
+                     charset='utf8')
 @ns.route('/')                 
 class Main(Resource):
   def post():
@@ -64,28 +64,28 @@ class fileUpload(Resource):
     s3.put_object(Bucket = BUCKET_NAME,Body = file,Key = file.filename,ContentType = file.content_type)
     dataUrl = BUCKET_NAME+"-"+filename+"-"+filename
     s3url = f'https://{BUCKET_NAME}.s3.{LOCATION}.amazonaws.com/{filename}'
-    #sendToDetect(dataUrl)
+    sendToDetect(dataUrl)
     #connection.close()
 
 # 받은 img 파일 -> Flask -> RabbitMQ (-> Python -> AI -> Python) -> Flask
-# def sendToDetect(url):
-#   message = str(url)
-#   channel.basic_publish(exchange='',routing_key='task_queue',body=message,
-#     properties=pika.BasicProperties(
-#         delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
-#     ))
-#   print(" [x] Sent %r" % message)
-#   checkRabbitMQ()
+def sendToDetect(url):
+  message = str(url)
+  channel.basic_publish(exchange='',routing_key='task_queue',body=message,
+    properties=pika.BasicProperties(
+        delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
+    ))
+  print(" [x] Sent %r" % message)
+  checkRabbitMQ()
 
-# @ns.route('/printResult')
-# class printResult(Resource):
-#   @ns.expect(result_parser)
-#   @ns.response(201, "스탯 정보 가져옴")
-#   @ns.response(400, "잘못된 요청")
-#   @ns.response(500, "서버에서 에러 발생")
+@ns.route('/printResult')
+class printResult(Resource):
+  @ns.expect(result_parser)
+  @ns.response(201, "스탯 정보 가져옴")
+  @ns.response(400, "잘못된 요청")
+  @ns.response(500, "서버에서 에러 발생")
 
-#   def post(self):     
-#     return getResult()
+  def post(self):
+    return getResult()
 
 if __name__=="__main__":
   # host 등을 직접 지정하고 싶다면

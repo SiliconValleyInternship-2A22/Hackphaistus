@@ -50,7 +50,7 @@ def updateSkills(ratio_idx,num):
     sql = '''
 	SELECT wisdom, charming, leadership, passion, socialskill, credit 
     FROM ratio, abilities
-	WHERE ratio.idx = abilities.ratio_id  and ratio.idx = %s and abilities.ver = %s;'''
+	WHERE ratio.id = abilities.ratio_id  and ratio.id = %s and abilities.ratio_type = %s;'''
     cursor.execute(sql,[ratio_idx,num])
     tlist = cursor.fetchall()
     skills[0] += int(tlist[0][0])
@@ -183,6 +183,9 @@ def calculateRatio(url):
     
     print("최종 : ",skills)    
     # pil 최종 :  [79, 73, 61, 66, 73, 84]
+
+
+    
     return skills
 
 '''
