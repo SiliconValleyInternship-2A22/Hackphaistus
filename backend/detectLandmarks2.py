@@ -4,13 +4,12 @@ import matplotlib.pyplot as plt
 import os
 import cv2
 from connection import s3_connection
-
-# def drawPlot(image,xy,radius,color,thickness):
-#     image = cv2.circle(image, xy, radius, color, thickness)
-#     return image
+from config import BUCKET_NAME, LOCATION
+def drawPlot(image,xy,radius,color,thickness):
+    image = cv2.circle(image, xy, radius, color, thickness)
+    return image
 
 def main(url):
-    print('c')
     predictor = dlib.shape_predictor("shape_predictor_68_face_landmarks.dat")
     s3 = s3_connection()    
     # 버켓이름,버켓하위 경로를 포함한 s3속 파일명,로컬에 저장할때 파일명
@@ -21,10 +20,10 @@ def main(url):
     faces = detector(img)
     #win.add_overlay(faces) # 얼굴 박스
 
-    print('d')
     #Add plot on the image by using CV2
     path = url[2]
-    #image = cv2.imread(path)
+    image = cv2.imread(path)
+    print(path)
 
     featureName = ['face', 'eyebrow1', 'eyebrow2', 'nose', 'nostril', 'eye1', 'eye2', 'lips', 'teeth']
     featureX = []
@@ -45,7 +44,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            #image = drawPlot(image, center_coordinates, 10, (0,0,255), -1)
+            image = drawPlot(image, center_coordinates, 10, (0,0,255), -1)
             
         '''face = (329, 713) (334, 783) (344, 851) (355, 921) (376, 990) (414, 1049) (469, 1100)(534, 1137)
         (610, 1148)(684, 1135)(746, 1095)(799, 1047)(834, 989)(855, 922)(865, 855)(876, 788)(880, 722)'''
@@ -65,7 +64,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            #image = drawPlot(image, center_coordinates, 10, (10,255,0), -1)
+            image = drawPlot(image, center_coordinates, 10, (10,255,0), -1)
             '''[383, 421, 474, 529, 582] [655, 624, 615, 623, 640]'''
         featureX.append(tmpX)
         featureY.append(tmpY)
@@ -82,7 +81,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1])) 
             center_coordinates = (int(part[0]),int(part[1]))
-            #image = drawPlot(image, center_coordinates, 10, (10,255,0), -1)
+            image = drawPlot(image, center_coordinates, 10, (10,255,0), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -98,7 +97,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            #image = drawPlot(image, center_coordinates, 10, (10,200,10), -1)
+            image = drawPlot(image, center_coordinates, 10, (10,200,10), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -114,7 +113,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            #image = drawPlot(image, center_coordinates, 10, (10,200,10), -1)
+            image = drawPlot(image, center_coordinates, 10, (10,200,10), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -130,7 +129,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            #image = drawPlot(image, center_coordinates, 10, (255,255,0), -1)
+            image = drawPlot(image, center_coordinates, 10, (255,255,0), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -145,7 +144,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            #image = drawPlot(image, center_coordinates, 10, (255,255,0), -1)
+            image = drawPlot(image, center_coordinates, 10, (255,255,0), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -160,7 +159,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            #image = drawPlot(image, center_coordinates, 10, (150,150,0), -1)
+            image = drawPlot(image, center_coordinates, 10, (150,150,0), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -176,13 +175,14 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            #image = drawPlot(image, center_coordinates, 10, (150,150,0), -1)
+            image = drawPlot(image, center_coordinates, 10, (150,150,0), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
     result = [featureName,featureX,featureY]
     print(result)
-    #cv2.imwrite('target.jpg', image)
+    cv2.imwrite('target.jpg', image)
+    #s3.put_object(Bucket = BUCKET_NAME,Body = image,Key = url[2],ContentType = image.content_type)
     os.remove(url[2])
     #win.wait_until_closed()
     return result
