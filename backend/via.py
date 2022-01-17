@@ -6,7 +6,6 @@ import detectLandmarks2 as dlibdlib
 
 # RabbitMQ
 
-
 url = []
 result = []
 print(' [*] Waiting for messages. To exit press CTRL+C')
@@ -48,8 +47,9 @@ def updateSkills(ratio_idx,num):
     skills[5] += int(tlist[0][5])    
 
 def calculateRatio(url): 
+    global skills
+    skills=[50,50,50,50,50,50]
     # 탐지 모델
-    print('abc')
     result = dlibdlib.main(url) #dlib
     features = result[0]
     C_X = result[1]
@@ -170,6 +170,7 @@ def calculateRatio(url):
     updateSkills(2,num)
     print("2번 후 눈썹 모양 스탯 확인 : ",skills)   
     setResult(skills)
+    return skills
 
 
 '''
@@ -182,6 +183,8 @@ def calculateRatio(url):
 5. 눈썹 비율 확인:  4.5
 5번 후 눈썹 모양 스탯 확인 :  [73, 80, 61, 62, 81, 71]
 2. 인중-턱 비율 확인:  2
-최종 :  [78, 90, 61, 62, 86, 74]
+
+필 최종 :  [78, 90, 61, 62, 86, 74] - dlib으로만!
+도운 최종 : [103, 116, 58, 69, 117, 96] - dlib으로만!
 최종 :  [79, 73, 61, 66, 73, 84]
 '''

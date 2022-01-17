@@ -9,6 +9,7 @@ from via import *
 
 # RabbitMQ
 
+
 # Flask 객체 인스턴스 생성
 app = Flask(__name__)
 
@@ -21,6 +22,8 @@ result_parser = ns.parser()
 
 # CORS(app)
 CORS(app, resources={r'*':{'origins': 'http://localhost:3000'}})
+
+result = []
 
 @ns.route('/')                 
 class Main(Resource):
@@ -54,8 +57,9 @@ class fileUpload(Resource):
     #sendToDetect(dataUrl)
     #connection.close()
     url = [BUCKET_NAME,filename,filename]
-    sendToDetect(url)
-
+    skills = sendToDetect(url)
+    return skills
+    
 # 받은 img 파일 -> Flask -> RabbitMQ (-> Python -> AI -> Python) -> Flask
 def sendToDetect(url):
   message = str(url)
@@ -65,9 +69,9 @@ def sendToDetect(url):
   #   ))
   print(" [x] Sent %r" % message)
   #checkRabbitMQ()
-  print('a')
-  calculateRatio(url)
-  
+  global result
+  result = calculateRatio(url)
+  return result
 
 @ns.route('/printResult')
 class printResult(Resource):
