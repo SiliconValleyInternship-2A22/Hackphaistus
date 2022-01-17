@@ -1,14 +1,19 @@
 import React from 'react';
 import "../css/Main.css";
 import styled from 'styled-components';
+import { windowScrollBy } from "seamless-scroll-polyfill";
+
 
 function Main(){
-    
+
+      const handleTop2 = () => {
+        windowScrollBy(window, { behavior: "smooth", top: 795, left: 0 });
+      }
 
     return(
         <div className='defalutBGC'>
             <div className='star'></div>
-            <button className='start'>Getting Start</button>
+            <button className='start' onClick={handleTop2}>Getting Start</button>
             <p className='first'>The first</p>
             <div className='mainCon'>
                 <div className='mainImg' />

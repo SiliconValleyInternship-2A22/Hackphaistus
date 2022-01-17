@@ -70,10 +70,65 @@
     width: 31%;
     height: 45%;
     background-color: #060606;
-    border: solid 2px #2C2C2C;
+    border: solid 3px #2C2C2C;
     border-radius: 16px;
 
     margin-top: -70px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.statContainer h3{
+    font-size: 20px;
+    color: #f4f4f4;
+    letter-spacing: 0.2em;
+
+    margin-bottom: 8px;
+    margin-top: 26px;
+    margin-left: 20px;
+}
+
+.statContainer span{
+    color: #FE5657;
+}
+
+.statContainer p{
+    font-size: 8.5px;
+    color: #E3E3E3;
+    line-height: 1.6;
+
+    margin: 0 20px;
+}
+
+.statBar{
+    width: 86%;
+    height: 4px;
+    margin: 0 20px;
+   
+    background-color: #333333;
+}
+
+.statRange{
+    width: 80%;
+    height: 100%;
+   
+    background-color: #FE5657;
+}
+
+.title{
+    width: 86%;
+    height: 10px;
+    margin: 0 20px;
+    margin-top: 24px;
+    margin-bottom: 8px;
+
+    font-size: 10px;
+    font-weight: 400;
+    color: #f4f4f4;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .saveBtn{
@@ -120,3 +175,4 @@
     padding: 0;
     border: none;
 }
+

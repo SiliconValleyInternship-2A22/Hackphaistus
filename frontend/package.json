@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@nivo/bullet": "^0.79.1",
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
@@ -11,6 +12,8 @@
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
+    "seamless-scroll-polyfill": "^2.1.6",
+    "smoothscroll-polyfill": "^0.4.4",
     "styled-components": "^5.3.3",
     "web-vitals": "^2.1.2"
   },

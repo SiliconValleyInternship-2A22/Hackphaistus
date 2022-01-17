@@ -36,7 +36,8 @@ function Upload(){
             <h1 className='picture'>PICTURE</h1>
 
             {img == null ? <p></p> :<img src={fileUrl}/>}
-            <input className='selectPic' id="profile-upload" type="file" accept="image/*" onChange={uploadImg}/>
+            <label for="profile-upload" className='selectPic'>Select a picture</label>
+            <input id="profile-upload" type="file" accept="image/*" style={{display:"none"}} onChange={uploadImg}/>
             <button onClick={postImg}>관상 보기</button>
             <button onClick={getImg}>결과 출력</button>
         </div>
