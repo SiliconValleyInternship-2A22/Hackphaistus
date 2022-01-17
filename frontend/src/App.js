@@ -10,9 +10,9 @@ const App = () => {
   return (
     <div>
       <Header/>
-      <Main />
-      <Upload />
-      <Result />
+      <Main/>
+      <Upload/>
+      <Result/>
     </div>
   );
 }
