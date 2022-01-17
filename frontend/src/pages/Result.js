@@ -3,9 +3,9 @@ import axios from 'axios';
 import "../css/Result.css";
 import styled from 'styled-components';
 
-const Result = () => {
-    const [result,setResult] = useState(null)
-    //const [result,setResult] = useState([78, 90, 61, 62, 86, 74]);
+const Result = (props) => {
+    const [result,setResult] = useState(props.skills)
+    console.log(result);
     const StatRange = styled.div`
     width: ${props => props.width}%;
     height: 100%;
@@ -18,17 +18,7 @@ const getImg = () => {
     })
   }
 
-
-    // useEffect (() => {
-    //     axios.post('http://localhost:5000/api/printResult').then(response=>{
-    //     console.log(response.data);
-    //     setResult(response.data);
-    //     console.log(result);
-    //     })},[result]);
-
     return(
-        <div>
-        {result==null ? <button onClick={getImg}>결과 출력</button>: 
         <div className='defalutBGC3'>
             <div className='firstpart'>
                 <div className='resultImg'></div>
@@ -122,7 +112,6 @@ const getImg = () => {
                 <button className='saveBtn'>Save</button>
             </div>
         </div>
-}</div>
     );
 }
 

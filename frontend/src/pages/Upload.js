@@ -2,24 +2,39 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import "../css/Upload.css";
 
-function Upload(){
+function Upload(props){
     const [img,setImg] = useState(null);
     const [fileUrl, setFileUrl] = useState(null);
-    //const [result,setResult] = useState([78, 90, 61, 62, 86, 74]);
+    const [result,setResult] = useState(null);
     const uploadImg = (e) => {
       const currentFile = e.target.files[0];
       setImg(currentFile);
     }
   
-    const postImg = () => {
+    // const postImg = () => {
+    //   const formData = new FormData();
+    //   formData.append('file', img);
+    //   console.log(img);
+    //   axios.post("http://localhost:5000/api/fileUpload", formData).then(response=>{
+    //     console.log(response.data);
+    //     setResult(response.data);
+    //   })
+    //   .catch(err=>{console.log('Failed to send img file to server');})
+    // }
+
+    const onSubmit = () => {
       const formData = new FormData();
       formData.append('file', img);
       console.log(img);
       axios.post("http://localhost:5000/api/fileUpload", formData).then(response=>{
         console.log(response.data);
-        //setResult(response.data);
+        setResult(response.data);
+        props.onSubmit(response.data);
       })
-      .catch(err=>{console.log('Failed to send img file to server');})
+      .catch(err=>{
+        console.log('Failed to send img file to server');
+      })
+      // props.onSubmit(response.data);
     }
     
     return (
@@ -33,7 +48,8 @@ function Upload(){
             {img == null ? <p></p> :<img src={fileUrl}/>}
             <label for="profile-upload" className='selectPic'>Select a picture</label>
             <input id="profile-upload" type="file" accept="image/*" style={{display:"none"}} onChange={uploadImg}/>
-            <button onClick={postImg}>관상 보기</button>
+            {/* <button onClick={postImg}>관상 보기</button> */}
+            <button onClick={onSubmit}>관상 보기</button>
         </div>
 
         <div className='rightPart'>
