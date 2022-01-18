@@ -1,4 +1,4 @@
-import { BallTriangle, TailSpin } from  'react-loader-spinner'
+import { BallTriangle, TailSpin } from 'react-loader-spinner';
 
 function Loading () {
     return(
