@@ -5,6 +5,7 @@ import os
 import cv2
 from connection import s3_connection
 from config import BUCKET_NAME, LOCATION
+ 
 def drawPlot(image,xy,radius,color,thickness):
     image = cv2.circle(image, xy, radius, color, thickness)
     return image
@@ -181,8 +182,10 @@ def main(url):
 
     result = [featureName,featureX,featureY]
     print(result)
-    cv2.imwrite('target.jpg', image)
-    #s3.put_object(Bucket = BUCKET_NAME,Body = image,Key = url[2],ContentType = image.content_type)
+    filename = url[2]+'result.png'
+    cv2.imwrite(filename, image)
+    # 이미지 열기
+    res = s3.upload_file(filename,BUCKET_NAME,filename)
     os.remove(url[2])
     #win.wait_until_closed()
     return result
