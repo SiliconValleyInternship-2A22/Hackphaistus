@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "flask": "^0.2.10",
+    "react-loader-spinner": "^5.0.8",
     "react-scripts": "^5.0.0"
   }
 }

@@ -4,6 +4,8 @@ import "../css/Result.css";
 import styled from 'styled-components';
 
 const Result = (props) => {
+    
+    
     const [result,setResult] = useState(props.skills)
     console.log(result);
     const StatRange = styled.div`
@@ -17,6 +19,8 @@ const getImg = () => {
       setResult(response.data);
     })
   }
+
+  
 
     return(
         <div className='defalutBGC3'>
