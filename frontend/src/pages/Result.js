@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import "../css/Result.css";
 import styled from 'styled-components';
+import Chart from '../components/chart'
 
 const Result = (props) => {
     
@@ -26,7 +27,10 @@ const getImg = () => {
         <div className='defalutBGC3'>
             <div className='firstpart'>
                 <div className='resultImg'></div>
-                <div className='overView'></div>
+                <div className='overView'>
+                    <h2>OVERVIEW</h2>
+                    <Chart/>
+                </div>
                 <div className='topValue'></div>
             </div>
             <div className='secondpart'>

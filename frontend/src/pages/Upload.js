@@ -53,7 +53,7 @@ function Upload(props){
             <label for="profile-upload" className='selectPic'>Select a picture</label>
             <input id="profile-upload" type="file" accept="image/*" style={{display:"none"}} onChange={uploadImg}/>
             {/* <button onClick={postImg}>관상 보기</button> */}
-            {isLoading?<Loading/>:<button onClick={onSubmit}>관상 보기</button>}
+            {isLoading?<Loading/>:<button onClick={onSubmit} className='loadResult'>Check the result</button>}
         </div>
 
         <div className='rightPart'>

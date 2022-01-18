@@ -90,6 +90,24 @@
     margin-top: 100px;
 }
 
+.loadResult{
+    padding: 8px 36px;
+
+    border: none;
+    border-radius: 6vh;
+    border: none;
+    box-shadow: 2px 2px 4px #000000;
+    background-color: #FE5657;
+
+    color: #f4f4f4;
+    font-size: 11px;
+    font-weight: 600;
+    text-shadow: 2px 2px 4px #000000 25%;
+
+    margin-left: 16px;
+
+}
+
 .rightPart{
     display: flex;
     flex-direction: row;
