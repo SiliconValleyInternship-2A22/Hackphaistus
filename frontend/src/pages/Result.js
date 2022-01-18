@@ -28,7 +28,7 @@ const getImg = () => {
             <div className='firstpart'>
                 <div className='resultImg'></div>
                 <div className='overView'>
-                    <h2>OVERVIEW</h2>
+                    <h2><span>O</span>VERVIEW</h2>
                     <Chart/>
                 </div>
                 <div className='topValue'></div>

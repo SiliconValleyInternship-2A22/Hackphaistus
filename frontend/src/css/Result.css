@@ -37,6 +37,19 @@
     background-color: #171717;
 }
 
+.overView h2{
+    font-size: 16px;
+    color: #f4f4f4;
+
+    margin-bottom: 4px;
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+.overView span{
+    color: #FE5657;
+}
+
 .topValue{
     width: 30%;
     height: 100%;

@@ -12,6 +12,11 @@ function Upload(props){
       const currentFile = e.target.files[0];
       setImg(currentFile);
     }
+
+    // 페이지 슬라이드
+    // const handleTop2 = () => {
+    //   windowScrollBy(window, { behavior: "smooth", top: 795, left: 0 });
+    // }
   
     // const postImg = () => {
     //   const formData = new FormData();
@@ -40,6 +45,7 @@ function Upload(props){
       })
       // props.onSubmit(response.data);
     }
+
     
     return (
       <div className='App defalutBGC2' >
