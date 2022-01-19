@@ -1,50 +1,42 @@
-from flask import Flask, request, render_template, jsonify, redirect, url_for
+from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 import pymysql
-# from connection import s3_connection
-# from config import BUCKET_NAME, LOCATION
-# import detectLandmarks
-import detectLandmarks2
-import pika
-
-# Flask 객체 인스턴스 생성
+from connection import s3_connection
+from config import BUCKET_NAME, LOCATION
+#import detectLandmarks as adrianb
+import detectLandmarks2 as dlibdlib
 via = Flask(__name__)
+
+# MySQL
+
+# RabbitMQ
+
 # CORS(app)
 CORS(via, resources={r'*':{'origins': 'http://localhost:5000'}})
-# MySQL
-db = pymysql.connect(host='db',port=3306,user='2a22',passwd='162girls',db='Hackphaistus',charset='utf8')
-# RabbitMQ
-# connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-# channel = connection.channel()
-# channel.queue_declare(queue='task_queue', durable=True)
 
+@via.route('/api') # Main
+def main():
+  return render_template('index.html')
 
 url = []
 result = []
 print(' [*] Waiting for messages. To exit press CTRL+C')
 
+
 def setResult(r):
     global result
     result = r
+    message = ''
+    for i in r:
+        message += str(i) + '-'
+    channel.basic_publish(exchange='',routing_key='result_queue',body=message,properties=pika.BasicProperties(
+        delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE))
+    print(" [x] Sent %r" % r)
 
 def getResult():
     return result
 
-# def callback(ch, method, properties, body):
-#     message = body.decode()
-#     print("너 받은 거 맞아?",message)
-#     ch.basic_ack(delivery_tag=method.delivery_tag)
-#     url = message.split("-")
-#     r = calculateRatio(url)
-#     setResult(r)
-    
-#def checkRabbitMQ():
-    # channel.basic_qos(prefetch_count=1)
-    # channel.basic_consume(queue='task_queue', on_message_callback=callback)
-    # channel.start_consuming()   
-
 skills = [50,50,50,50,50,50]
-
 def updateSkills(ratio_idx,num):
     cursor = db.cursor()
     sql = '''
@@ -61,8 +53,10 @@ def updateSkills(ratio_idx,num):
     skills[5] += int(tlist[0][5])    
 
 def calculateRatio(url): 
+    global skills
+    skills=[50,50,50,50,50,50]
     # 탐지 모델
-    result = detectLandmarks2.main(url) #dlib
+    result = dlibdlib.main(url) #dlib
     features = result[0]
     C_X = result[1]
     C_Y = result[2]
@@ -151,7 +145,7 @@ def calculateRatio(url):
 
 
 
-    #result = detectLandmarks.main(url) 
+    #result = adrianb.main(url) 
     features = result[0]
     C_X = result[1]
     C_Y = result[2]
@@ -180,14 +174,24 @@ def calculateRatio(url):
     elif num < 2.0:
         num = 1
     updateSkills(2,num)
+    print("2번 후 눈썹 모양 스탯 확인 : ",skills)   
+    setResult(skills)
+    #return skills
+
+def callback(ch, method, properties, body):
+    message = body.decode()
+    print("Received: ",message)
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+    url = message.split("-")
+    r = calculateRatio(url)
+    setResult(r)
     
-    print("최종 : ",skills)    
-    # pil 최종 :  [79, 73, 61, 66, 73, 84]
+channel.basic_qos(prefetch_count=1)
+channel.basic_consume(queue='task_queue', on_message_callback=callback)
+channel.start_consuming()   
 
-
-    
-    return skills
-
+if __name__=="__main__":
+    via.run(host="127.0.0.1", port="5005", debug=True)
 '''
 1. 미간 비율 :  3.6
 1번 후 미간 스탯 확인 :  [56, 53, 51, 52, 52, 50]
@@ -198,12 +202,8 @@ def calculateRatio(url):
 5. 눈썹 비율 확인:  4.5
 5번 후 눈썹 모양 스탯 확인 :  [73, 80, 61, 62, 81, 71]
 2. 인중-턱 비율 확인:  2
-최종 :  [78, 90, 61, 62, 86, 74]
-'''
-@via.route("/api/printResult", methods=["POST"])
-def printResult():
-  if request.method == "POST":
-    return 'process'
 
-if __name__=="__main__":
-  via.run(host="127.0.0.1", port="5005", debug=True)
+필 최종 :  [78, 90, 61, 62, 86, 74] - dlib으로만!
+도운 최종 : [103, 116, 58, 69, 117, 96] - dlib으로만!
+최종 :  [79, 73, 61, 66, 73, 84]
+'''

@@ -1,12 +1,12 @@
-import face_alignment
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
-from skimage import io
-import collections
-import sys
-sys.path.append('../backend')
-from connection import s3_connection
-s3 = s3_connection()
+# import face_alignment
+# import matplotlib.pyplot as plt
+# from mpl_toolkits.mplot3d import Axes3D
+# from skimage import io
+# import collections
+# import sys
+# sys.path.append('../backend')
+# from connection import s3_connection
+# s3 = s3_connection()
 
 def main(url):
     # Optionally set detector and some additional detector parameters

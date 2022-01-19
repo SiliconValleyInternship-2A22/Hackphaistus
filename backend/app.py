@@ -6,12 +6,8 @@ from werkzeug.datastructures import FileStorage
 from connection import s3_connection
 from config import BUCKET_NAME, LOCATION
 from via import *
-
-# RabbitMQ
-
-
-# Flask 객체 인스턴스 생성
 app = Flask(__name__)
+# RabbitMQ
 
 # Swagger API
 api = Api(app,version='1.0',title='Hackphaistus API',description='Hackphaistus REST API 문서')
@@ -19,11 +15,19 @@ ns = api.namespace('api',description='Hackphaistus API')
 parser = ns.parser()
 file_parser = ns.parser()
 result_parser = ns.parser()
-
 # CORS(app)
 CORS(app, resources={r'*':{'origins': 'http://localhost:3000'}})
 
 result = []
+def callback(ch, method, properties, body):
+    message = body.decode()
+    print("Received: ",message)
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+    arr = message.split("-")
+    global result
+    for i in range(len(arr)-1):
+      result.append(int(arr[i])) 
+    channel.close()
 
 @ns.route('/')                 
 class Main(Resource):
@@ -54,24 +58,27 @@ class fileUpload(Resource):
     s3.put_object(Bucket = BUCKET_NAME,Body = file,Key = file.filename,ContentType = file.content_type)
     dataUrl = BUCKET_NAME+"-"+filename+"-"+filename
     s3url = f'https://{BUCKET_NAME}.s3.{LOCATION}.amazonaws.com/{filename}'
-    #sendToDetect(dataUrl)
-    #connection.close()
-    url = [BUCKET_NAME,filename,filename]
-    skills = sendToDetect(url)
-    return skills
+    sendToDetect(dataUrl)
+    return result
     
 # 받은 img 파일 -> Flask -> RabbitMQ (-> Python -> AI -> Python) -> Flask
 def sendToDetect(url):
   message = str(url)
-  # channel.basic_publish(exchange='',routing_key='task_queue',body=message,
-  #   properties=pika.BasicProperties(
-  #       delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
-  #   ))
+  if not channel.is_open:
+    channel.open()
+  channel.basic_publish(exchange='',routing_key='task_queue',body=message,
+    properties=pika.BasicProperties(
+        delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
+    ))
   print(" [x] Sent %r" % message)
-  #checkRabbitMQ()
+
+  channel.basic_qos(prefetch_count=1)
+  print('rabbitmq:1')
+  channel.basic_consume(queue='result_queue', on_message_callback=callback)
+  print('rabbitmq:2')
+  channel.start_consuming()   
   global result
-  result = calculateRatio(url)
-  return result
+  print(result)
 
 @ns.route('/printResult')
 class printResult(Resource):
@@ -81,12 +88,10 @@ class printResult(Resource):
   @ns.response(500, "서버에서 에러 발생")
   def post(self):
     return getResult()
-
+    # return 'Get Result'
 
 if __name__=="__main__":
-  # host 등을 직접 지정하고 싶다면
   app.run(host="127.0.0.1", port="5000", debug=True)
-
 '''
 # app.py
 from flask import Flask, request, render_template, jsonify
