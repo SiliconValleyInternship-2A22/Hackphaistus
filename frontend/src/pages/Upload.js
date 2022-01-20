@@ -36,8 +36,7 @@ function Upload(props){
       console.log(img);
       axios.post("http://localhost:5000/api/fileUpload", formData).then(response=>{
         console.log(response.data);
-        setResult(response.data);
-        props.onSubmit(response.data);
+        props.onSubmit(response.data.url,response.data.result);
         setIsLoading(false);
       })
       .catch(err=>{

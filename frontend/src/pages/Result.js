@@ -3,30 +3,39 @@ import axios from 'axios';
 import "../css/Result.css";
 import styled from 'styled-components';
 import Chart from '../components/chart'
-
 const Result = (props) => {
-    
-    
-    const [result,setResult] = useState(props.skills)
-    console.log(result);
+    const [result,setResult] = useState(props.skills);
+    const [url,setUrl] = useState(props.image);
+    console.log(result)
+    console.log(url)
+    const ResultImg = styled.div`
+        width: 200px;
+        height: 200px;
+        border-radius: 150px;
+        background-image: url(${props => props.url});
+        background-size: cover;
+        margin-right: 27px;
+        margin-top: 10px;
+    `
     const StatRange = styled.div`
     width: ${props => props.width}%;
     height: 100%;
     background-color: #FE5657;
 `;
-const getImg = () => {
-    axios.post("http://localhost:5000/api/printResult").then(response=>{
-      console.log(response.data);
-      setResult(response.data);
-    })
-  }
+    const onSaveResult = () => {
+        
+    }
 
-  
+    // useEffect(()=>
+    // axios.post("http://localhost:5000/api/printResult".then(response=>{
+    //     console.log(response.data);
+    //   })
+    // ));
 
     return(
         <div className='defalutBGC3'>
             <div className='firstpart'>
-                <div className='resultImg'></div>
+                <ResultImg url={url}/>
                 <div className='overView'>
                     <h2><span>O</span>VERVIEW</h2>
                     <Chart/>
@@ -116,7 +125,7 @@ const getImg = () => {
                 </div>
             </div>
             <div className='lastPart'>
-                <button className='restartBtn'>Restart</button>
+                <button className='restartBtn' onClick={onSaveResult}>Restart</button>
                 <button className='saveBtn'>Save</button>
             </div>
         </div>

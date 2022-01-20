@@ -6,17 +6,22 @@ import Header from './components/header';
 
 const App = () => { 
   const [result,setResult] = useState(null);
-  const onSubmitResult = (arr) => {
-    console.log(arr);
+  const [url,setUrl] = useState(null);
+  const [ready,setReady] = useState(false);
+  const onSubmitResult = (img,arr) => {
     setResult(arr);
+    setUrl(img);
+    console.log(img)
+    console.log(arr)
+    setReady(true);
   }
   return (
     <div>
       <Header/>
       <Main/>
       <Upload onSubmit={onSubmitResult}/>
-      {result!=null?
-      <Result skills={result}/>:<p></p>}
+      {ready == true ?
+      <Result skills={result} image={url}/>:<p></p>}
     </div>
   );
 }
