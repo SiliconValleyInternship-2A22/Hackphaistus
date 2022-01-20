@@ -1,12 +1,10 @@
-# import face_alignment
-# import matplotlib.pyplot as plt
+import face_alignment
+import matplotlib.pyplot as plt
 # from mpl_toolkits.mplot3d import Axes3D
-# from skimage import io
-# import collections
-# import sys
-# sys.path.append('../backend')
-# from connection import s3_connection
-# s3 = s3_connection()
+from skimage import io
+import collections
+from connection import s3_connection
+s3 = s3_connection()
 
 def main(url):
     # Optionally set detector and some additional detector parameters
@@ -14,7 +12,9 @@ def main(url):
     face_detector_kwargs = {"filter_threshold" : 0.8}
     # Run the 3D face alignment on a test image, without CUDA.
     fa = face_alignment.FaceAlignment(face_alignment.LandmarksType._3D, device='cpu', flip_input=True,
-                                  face_detector=face_detector, face_detector_kwargs=face_detector_kwargs)
+                                   face_detector=face_detector)
+                                   #, face_detector_kwargs=face_detector_kwargs
+
     # AWS S3 bucket
     # 버켓이름,버켓하위 경로를 포함한 s3속 파일명,로컬에 저장할때 파일명
     s3.download_file(url[0],url[1],url[2])

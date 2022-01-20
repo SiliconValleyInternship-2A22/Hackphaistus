@@ -182,13 +182,11 @@ def main(url):
 
     result = [featureName,featureX,featureY]
     print(result)
-    filename = url[2]+'result.png'
+    filename = url[2]+'_result.png'
     cv2.imwrite(filename, image)
     # 이미지 열기
     res = s3.upload_file(filename,BUCKET_NAME,filename)
     os.remove(url[2])
+    os.remove(filename)
     #win.wait_until_closed()
     return result
-
-#main(['siliconvalleyinternship2a22','pil.jpg','pil.jpg'])
-#main(['siliconvalleyinternship2a22','dwoon.jpg','dwoon.jpg'])
