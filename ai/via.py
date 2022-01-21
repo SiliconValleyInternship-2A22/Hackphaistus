@@ -3,8 +3,8 @@ from flask_cors import CORS
 import pymysql
 from connection import s3_connection
 from config import BUCKET_NAME, LOCATION
-#import detectLandmarks as adrianb
-import detectLandmarks2 as dlibdlib
+import adrianb
+import dlibb
 via = Flask(__name__)
 
 # MySQL
@@ -18,17 +18,19 @@ CORS(via, resources={r'*':{'origins': 'http://localhost:5000'}})
 def main():
   return render_template('index.html')
 
-url = []
 result = []
+url = []
+
 print(' [*] Waiting for messages. To exit press CTRL+C')
 
-
-def setResult(r):
+def setResult(r,filename):
     global result
     result = r
     message = ''
-    for i in r:
+    for i in result:
         message += str(i) + '-'
+    message += filename
+    # send receive    
     channel.basic_publish(exchange='',routing_key='result_queue',body=message,properties=pika.BasicProperties(
         delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE))
     print(" [x] Sent %r" % r)
@@ -56,7 +58,7 @@ def calculateRatio(url):
     global skills
     skills=[50,50,50,50,50,50]
     # 탐지 모델
-    result = dlibdlib.main(url) #dlib
+    result = dlibb.main(url) #dlib
     features = result[0]
     C_X = result[1]
     C_Y = result[2]
@@ -175,8 +177,7 @@ def calculateRatio(url):
         num = 1
     updateSkills(2,num)
     print("2번 후 눈썹 모양 스탯 확인 : ",skills)   
-    setResult(skills)
-    #return skills
+    return skills
 
 def callback(ch, method, properties, body):
     message = body.decode()
@@ -184,8 +185,9 @@ def callback(ch, method, properties, body):
     ch.basic_ack(delivery_tag=method.delivery_tag)
     url = message.split("-")
     r = calculateRatio(url)
-    setResult(r)
+    setResult(r,url[2])
     
+# receive task    
 channel.basic_qos(prefetch_count=1)
 channel.basic_consume(queue='task_queue', on_message_callback=callback)
 channel.start_consuming()   
@@ -204,6 +206,6 @@ if __name__=="__main__":
 2. 인중-턱 비율 확인:  2
 
 필 최종 :  [78, 90, 61, 62, 86, 74] - dlib으로만!
-도운 최종 : [103, 116, 58, 69, 117, 96] - dlib으로만!
+도운 최종 : [75, 76, 47, 57, 81, 72] - dlib으로만!
 최종 :  [79, 73, 61, 66, 73, 84]
 '''
