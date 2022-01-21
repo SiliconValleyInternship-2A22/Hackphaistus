@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import "../css/Upload.css";
 import Loading from '../components/loading';
+import { windowScrollBy } from "seamless-scroll-polyfill";
 
 function Upload(props){
     const [img,setImg] = useState(null);
@@ -14,9 +15,9 @@ function Upload(props){
     }
 
     // 페이지 슬라이드
-    // const handleTop2 = () => {
-    //   windowScrollBy(window, { behavior: "smooth", top: 795, left: 0 });
-    // }
+    const handleTop2 = () => {
+      windowScrollBy(window, { behavior: "smooth", top: 750, left: 0 });
+    }
   
     // const postImg = () => {
     //   const formData = new FormData();

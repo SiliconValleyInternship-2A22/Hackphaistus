@@ -52,7 +52,38 @@ const Result = (props) => {
                     <h2><span>O</span>VERVIEW</h2>
                     <Chart/>
                 </div>
-                <div className='topValue'></div>
+                <div className='topValue'>
+                    <h2><span>T</span>OP 3 VALUE</h2>
+                    <div className='topCon'>
+                        <div topConA>
+                            <div className='title'>
+                                <h4>점수</h4>
+                                <h4>1</h4>
+                            </div>
+                            <div className='statBar'>
+                                <StatRange width={result[0]}/>
+                            </div>
+                        </div>
+                        <div topConB>
+                            <div className='title'>
+                                <h4>점수</h4>
+                                <h4>1</h4>
+                            </div>
+                            <div className='statBar'>
+                                <StatRange width={result[0]}/>
+                            </div>
+                        </div>
+                        <div topConC>
+                            <div className='title'>
+                                <h4>점수</h4>
+                                <h4>1</h4>
+                            </div>
+                            <div className='statBar'>
+                                <StatRange width={result[0]}/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div className='secondpart'>
                 <div className='containerWrap'>
@@ -83,7 +114,7 @@ const Result = (props) => {
                         </div>
                     </div>
                     <div className='statContainer'>
-                    <h3><span>통</span>솔<span>력</span></h3>
+                    <h3><span>통</span>솔력</h3>
                         <p> 지혜로운 사람은 평소 사리를 분별하며 적절히 처리하는 능력이 뛰어납니다. 이들의 
                             특징은 평소 주변 사람들에 대한 이해가 뛰어나고, 효율적으로 자신의 지식 및 주변 환경을 
                             이용하여 원하는 결과를 생성하는 것입니다.</p>
@@ -109,7 +140,7 @@ const Result = (props) => {
                         </div>
                     </div>
                     <div className='statContainer'>
-                    <h3><span>사</span>회<span>성</span></h3>
+                    <h3><span>사</span>회성</h3>
                         <p> 지혜로운 사람은 평소 사리를 분별하며 적절히 처리하는 능력이 뛰어납니다. 이들의 
                             특징은 평소 주변 사람들에 대한 이해가 뛰어나고, 효율적으로 자신의 지식 및 주변 환경을 
                             이용하여 원하는 결과를 생성하는 것입니다.</p>
@@ -122,7 +153,7 @@ const Result = (props) => {
                         </div>
                     </div>
                     <div className='statContainer'>
-                    <h3><span>신</span>뢰<span>도</span></h3>
+                    <h3><span>신</span>뢰도</h3>
                         <p> 지혜로운 사람은 평소 사리를 분별하며 적절히 처리하는 능력이 뛰어납니다. 이들의 
                             특징은 평소 주변 사람들에 대한 이해가 뛰어나고, 효율적으로 자신의 지식 및 주변 환경을 
                             이용하여 원하는 결과를 생성하는 것입니다.</p>
