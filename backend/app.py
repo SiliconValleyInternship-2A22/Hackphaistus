@@ -1,12 +1,13 @@
 # app.py
-from flask import Flask, request, render_template, jsonify, redirect, url_for
+from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 from flask_restx import Resource, Api # Swagger
 from werkzeug.datastructures import FileStorage
 from connection import s3_connection
 from config import BUCKET_NAME, LOCATION
-from via import *
+from threading import Thread
 app = Flask(__name__)
+
 # RabbitMQ
 
 # Swagger API
@@ -18,17 +19,6 @@ result_parser = ns.parser()
 # CORS(app)
 CORS(app, resources={r'*':{'origins': 'http://localhost:3000'}})
 
-result = []
-def callback(ch, method, properties, body):
-    message = body.decode()
-    print("Received: ",message)
-    ch.basic_ack(delivery_tag=method.delivery_tag)
-    arr = message.split("-")
-    global result
-    for i in range(len(arr)-1):
-      result.append(int(arr[i])) 
-    channel.close()
-
 @ns.route('/')                 
 class Main(Resource):
   def post():
@@ -39,9 +29,41 @@ class setBtn(Resource):
   def post():
     return 'Server has checked your request';
 
+result = []
+file =''
+
+def setResult(data,filename):
+  global result 
+  result = data
+  global file
+  file = filename
+
+def getResult():
+  global result 
+  global file
+  return result, file
+
+def callback(ch, method, properties, body):
+    message = body.decode()
+    print("Received: ",message)
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+    arr = message.split("-")
+    result = []
+    for i in range(len(arr)-1):
+      result.append(int(arr[i])) 
+    filename = arr[len(arr)-1]
+    setResult(result,filename)
+    #channel.close()
+
+def receiveFromDetect():
+  # receive result
+  channel.basic_qos(prefetch_count=1)
+  channel.basic_consume(queue='result_queue', on_message_callback=callback)
+  channel.start_consuming()  
+
 @ns.route('/fileUpload', methods = ['POST'])
 class fileUpload(Resource):
-  file_parser.add_argument('file',type=FileStorage,required=True,location='files' ,help="얼굴 정면 사진 업로드")  
+  file_parser.add_argument('file',type=FileStorage,required=True,location='files',help="얼굴 정면 사진 업로드")  
 
   @ns.expect(file_parser)
   @ns.response(201, "사진 등록 성공")
@@ -57,28 +79,19 @@ class fileUpload(Resource):
     s3 = s3_connection()
     s3.put_object(Bucket = BUCKET_NAME,Body = file,Key = file.filename,ContentType = file.content_type)
     dataUrl = BUCKET_NAME+"-"+filename+"-"+filename
-    s3url = f'https://{BUCKET_NAME}.s3.{LOCATION}.amazonaws.com/{filename}'
     sendToDetect(dataUrl)
-    return result
-    
+    return {'Task:', dataUrl}
+
 # 받은 img 파일 -> Flask -> RabbitMQ (-> Python -> AI -> Python) -> Flask
 def sendToDetect(url):
   message = str(url)
-  if not channel.is_open:
-    channel.open()
+  # send task
   channel.basic_publish(exchange='',routing_key='task_queue',body=message,
     properties=pika.BasicProperties(
         delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
     ))
-  print(" [x] Sent %r" % message)
-
-  channel.basic_qos(prefetch_count=1)
-  print('rabbitmq:1')
-  channel.basic_consume(queue='result_queue', on_message_callback=callback)
-  print('rabbitmq:2')
-  channel.start_consuming()   
-  global result
-  print(result)
+  print(" [x] Sent %r" % message)  
+  #receiveFromDetect()
 
 @ns.route('/printResult')
 class printResult(Resource):
@@ -87,11 +100,37 @@ class printResult(Resource):
   @ns.response(400, "잘못된 요청")
   @ns.response(500, "서버에서 에러 발생")
   def post(self):
-    return getResult()
-    # return 'Get Result'
+    global file
+    filename = str(file) + '_result.png'
+    s3url = f'https://{BUCKET_NAME}.s3.{LOCATION}.amazonaws.com/{filename}'
+    global result
+    print(file,filename,result)
+    return {"file" : str(file), "url" : s3url, "result" : result}
+
+# channel.basic_qos(prefetch_count=1)
+# channel.basic_consume(queue='result_queue', on_message_callback=callback)
+# thread = Thread(target = channel.start_consuming)
+# thread.start()
 
 if __name__=="__main__":
   app.run(host="127.0.0.1", port="5000", debug=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 '''
 # app.py
 from flask import Flask, request, render_template, jsonify
