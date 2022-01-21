@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import "../css/Upload.css";
 import Loading from '../components/loading';
@@ -6,7 +6,7 @@ import Loading from '../components/loading';
 function Upload(props){
     const [img,setImg] = useState(null);
     const [fileUrl, setFileUrl] = useState(null);
-    const [result,setResult] = useState(null);
+    const [filename,setFilename] = useState(null);
     const [isLoading,setIsLoading] = useState(false);
     const uploadImg = (e) => {
       const currentFile = e.target.files[0];
@@ -34,17 +34,25 @@ function Upload(props){
       const formData = new FormData();
       formData.append('file', img);
       console.log(img);
-      axios.post("http://localhost:5000/api/fileUpload", formData).then(response=>{
-        console.log(response.data);
-        props.onSubmit(response.data.url,response.data.result);
-        setIsLoading(false);
-      })
-      .catch(err=>{
+      setFilename(img.name);
+      axios.post("http://localhost:5000/api/fileUpload", formData).catch(err=>{
         console.log('Failed to send img file to server');
       })
-      // props.onSubmit(response.data);
     }
 
+    const [counter,setCounter] = useState(0);
+    useEffect(() => {
+      const req = setInterval(() => {
+        axios.post("http://localhost:5000/api/printResult").then(response=>{
+        //if (response.data.result.length != 0){ 
+          if (response.data.file == filename){
+          //console.log(response.data);
+          props.onSubmit(response.data.url,response.data.result);
+          setIsLoading(false);
+          return clearInterval(req);
+        }
+      })}, 5000);
+    }, [filename]);
     
     return (
       <div className='App defalutBGC2' >

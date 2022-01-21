@@ -6,8 +6,6 @@ import Chart from '../components/chart'
 const Result = (props) => {
     const [result,setResult] = useState(props.skills);
     const [url,setUrl] = useState(props.image);
-    console.log(result)
-    console.log(url)
     const ResultImg = styled.div`
         width: 200px;
         height: 200px;
@@ -22,9 +20,23 @@ const Result = (props) => {
     height: 100%;
     background-color: #FE5657;
 `;
-    const onSaveResult = () => {
-        
-    }
+    // const onSaveResult = () => {
+    //     const final = {data:data}
+    //     axios({
+	// 		url: 'http://localhost:5000/api/exportResult', //your url
+	// 		method: 'POST',
+	// 		data: final,
+	// 		responseType: 'blob', // important
+	// 	  })
+	// .then((response) => {
+	// 	const url = window.URL.createObjectURL(new Blob([response.data]));
+	// 	const link = document.createElement('a');
+	// 	link.href = url;
+	// 	link.setAttribute('download', 'result.csv'); //or any other extension
+	// 	document.body.appendChild(link);
+	// 	link.click();
+	//  });
+    // }
 
     // useEffect(()=>
     // axios.post("http://localhost:5000/api/printResult".then(response=>{
@@ -125,7 +137,7 @@ const Result = (props) => {
                 </div>
             </div>
             <div className='lastPart'>
-                <button className='restartBtn' onClick={onSaveResult}>Restart</button>
+                <button className='restartBtn'>Restart</button>
                 <button className='saveBtn'>Save</button>
             </div>
         </div>

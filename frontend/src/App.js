@@ -11,8 +11,6 @@ const App = () => {
   const onSubmitResult = (img,arr) => {
     setResult(arr);
     setUrl(img);
-    console.log(img)
-    console.log(arr)
     setReady(true);
   }
   return (
