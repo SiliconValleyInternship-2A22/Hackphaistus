@@ -18,7 +18,6 @@ updateDate DATETIME DEFAULT CURRENT_TIMESTAMP,
 createDate DATETIME not null
 );
 
-
 insert into ratio(standard_feature,target_feature,standard_ratio,target_ratio,createDate) values ('eyes','cheekbones',1,3.7,'2022-01-13 15:00:00');
 insert into ratio(standard_feature,target_feature,standard_ratio,target_ratio,createDate) values ('philanthropy','chin',1,2.0,'2022-01-13 15:00:00');
 insert into ratio(standard_feature,target_feature,standard_ratio,target_ratio,createDate) values ('upperlip','lowerlip',1,1.5,'2022-01-13 15:00:00');
@@ -66,3 +65,20 @@ insert into abilities(ratio_id,ratio_type,wisdom,charming,leadership,passion,soc
 #눈썹 가로 세로
 insert into abilities(ratio_id,ratio_type,wisdom,charming,leadership,passion,socialskill,credit,createDate) values (5,1,2,9,8,2,9,3,'2022-01-13 15:00:00');
 insert into abilities(ratio_id,ratio_type,wisdom,charming,leadership,passion,socialskill,credit,createDate) values (5,2,8,-2,3,6,1,9,'2022-01-13 15:00:00');
+
+
+# 결과값 저장
+create table results(
+id int not null auto_increment primary key,
+task_id int not null,
+wisdom int,
+charming int,
+leadership int,
+passion int,
+socialskill int,
+credit int,
+s3url varchar(100),
+createDate DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+# docker exec -it mysql-con bash
