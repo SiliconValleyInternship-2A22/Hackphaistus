@@ -7,10 +7,6 @@ import adrianb
 import dlibb
 via = Flask(__name__)
 
-# MySQL
-
-# RabbitMQ
-
 # CORS(app)
 CORS(via, resources={r'*':{'origins': 'http://localhost:5000'}})
 
@@ -188,9 +184,24 @@ def callback(ch, method, properties, body):
     setResult(r,url[2])
     
 # receive task    
+channel.queue_declare(queue='rpc_queue')
+def on_request(ch, method, props, body):
+    message = body.decode()
+    print("Received: ",message)
+    url = message.split("-")
+    result = calculateRatio(url)
+    response = ''
+    for i in result:
+        response += str(i) + '-'
+    response += url[2]
+    print(" [.] Response:%s" % response)
+    ch.basic_publish(exchange='',routing_key=props.reply_to,properties=pika.BasicProperties(correlation_id = props.correlation_id),body=str(response))
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
 channel.basic_qos(prefetch_count=1)
-channel.basic_consume(queue='task_queue', on_message_callback=callback)
-channel.start_consuming()   
+channel.basic_consume(queue='rpc_queue', on_message_callback=on_request)
+print(" [x] Awaiting RPC requests")
+channel.start_consuming() 
 
 if __name__=="__main__":
     via.run(host="127.0.0.1", port="5005", debug=True)
@@ -204,8 +215,7 @@ if __name__=="__main__":
 5. 눈썹 비율 확인:  4.5
 5번 후 눈썹 모양 스탯 확인 :  [73, 80, 61, 62, 81, 71]
 2. 인중-턱 비율 확인:  2
-
-필 최종 :  [78, 90, 61, 62, 86, 74] - dlib으로만!
-도운 최종 : [75, 76, 47, 57, 81, 72] - dlib으로만!
-최종 :  [79, 73, 61, 66, 73, 84]
+필 최종 :  [78, 90, 61, 62, 86, 74] 
+도운 최종 : [75, 76, 47, 57, 81, 72] 
+사나 최종 : [84, 79, 56, 66, 78, 80]
 '''
