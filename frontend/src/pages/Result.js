@@ -44,6 +44,10 @@ const Result = (props) => {
     //   })
     // ));
 
+    const onRefresh = () => {
+        window.location.reload();
+    }
+
     return(
         <div className='defalutBGC3'>
             <div className='firstpart'>
@@ -168,7 +172,7 @@ const Result = (props) => {
                 </div>
             </div>
             <div className='lastPart'>
-                <button className='restartBtn'>Restart</button>
+                <button className='restartBtn' onClick={onRefresh}>Restart</button>
                 <button className='saveBtn'>Save</button>
             </div>
         </div>
