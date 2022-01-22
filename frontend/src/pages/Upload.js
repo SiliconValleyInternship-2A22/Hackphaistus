@@ -8,6 +8,7 @@ function Upload(props){
     const [img,setImg] = useState(null);
     const [fileUrl, setFileUrl] = useState(null);
     const [filename,setFilename] = useState(null);
+    const [taskID,setTaskID] = useState(1);
     const [isLoading,setIsLoading] = useState(false);
     const uploadImg = (e) => {
       const currentFile = e.target.files[0];
@@ -29,6 +30,9 @@ function Upload(props){
     //   })
     //   .catch(err=>{console.log('Failed to send img file to server');})
     // }
+  //   useEffect(() => {
+  //     axios.post("http://localhost:5000/api/receiveSignal")
+  // }, []);
 
     const onSubmit = () => {
       setIsLoading(true);
@@ -36,24 +40,42 @@ function Upload(props){
       formData.append('file', img);
       console.log(img);
       setFilename(img.name);
-      axios.post("http://localhost:5000/api/fileUpload", formData).catch(err=>{
+      axios.post("http://localhost:5000/api/fileUpload", formData).then(response=>{
+        console.log(response.data);
+        props.onSubmit(response.data.url,response.data.result);
+        setIsLoading(false);
+        // const task_id = response.data.task;
+        // const req = setInterval(() => {
+        //   axios.post("http://localhost:5000/api/printResult",{'id':task_id}).then(response=>{
+        //   if (response.data.result.length != 0){ 
+        //       props.onSubmit(response.data.url,response.data.result);
+        //       setIsLoading(false);
+        //       return clearInterval(req);
+        //   }
+        // })}, 5000);
+        // setTaskID(response.data.task+1);
+      })
+      .catch(err=>{
         console.log('Failed to send img file to server');
       })
     }
 
-    const [counter,setCounter] = useState(0);
-    useEffect(() => {
-      const req = setInterval(() => {
-        axios.post("http://localhost:5000/api/printResult").then(response=>{
-        //if (response.data.result.length != 0){ 
-          if (response.data.file == filename){
-          //console.log(response.data);
-          props.onSubmit(response.data.url,response.data.result);
-          setIsLoading(false);
-          return clearInterval(req);
-        }
-      })}, 5000);
-    }, [filename]);
+    // const [counter,setCounter] = useState(0);
+    // useEffect(() => {
+    //   const req = setInterval(() => {
+    //     //console.log(taskID);
+    //     axios.post("http://localhost:5000/api/printResult",{'id':taskID}).then(response=>{
+    //       console.log(response.data);
+    //       //return clearInterval(req);
+    //     if (response.data.result.length != 0){ 
+    //       //if (response.data.file === filename){
+    //         //console.log(filename);
+    //         props.onSubmit(response.data.url,response.data.result);
+    //         setIsLoading(false);
+    //         return clearInterval(req);
+    //     }
+    //   })}, 10000);
+    // }, [filename]);
     
     return (
       <div className='App defalutBGC2' >
