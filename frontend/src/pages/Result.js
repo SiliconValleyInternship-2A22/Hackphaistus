@@ -1,5 +1,4 @@
-import React, {useState, useEffect} from 'react';
-import axios from 'axios';
+import React, {useState, useEffect, useRef} from 'react';
 import "../css/Result.css";
 import styled from 'styled-components';
 import Chart from '../components/chart'
@@ -7,6 +6,9 @@ import Chart from '../components/chart'
 // const newArr = [...result];
 //     newArr = newArr.sort((a, b) => b - a);
 //     setResult(newArr);
+
+import domtoimage from 'dom-to-image';
+import { saveAs } from 'file-saver';
 
 const Result = (props) => {
 
@@ -57,18 +59,20 @@ const Result = (props) => {
 	//  });
     // }
 
-    // useEffect(()=>
-    // axios.post("http://localhost:5000/api/printResult".then(response=>{
-    //     console.log(response.data);
-    //   })
-    // ));
-
     const onRefresh = () => {
         window.location.reload();
     }
+    const resultRef = useRef();
+    const onDownloadBtn = () => {
+        const resultCap = resultRef.current;
+        domtoimage.toBlob(resultCap)
+        .then((blob) => {
+        saveAs(blob, 'Hackphaistus.png');
+        });
+    };
 
     return(
-        <div className='defalutBGC3'>
+        <div className='defalutBGC3' ref={resultRef}>
             <div className='firstpart'>
                 <ResultImg url={url}/>
                 <div className='overView'>
@@ -192,7 +196,7 @@ const Result = (props) => {
             </div>
             <div className='lastPart'>
                 <button className='restartBtn' onClick={onRefresh}>Restart</button>
-                <button className='saveBtn'>Save</button>
+                <button className='saveBtn' onClick={onDownloadBtn}>Save</button>
             </div>
         </div>
     );
