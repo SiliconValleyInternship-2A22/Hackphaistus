@@ -1,53 +1,42 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent, useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-const data = [
-  {
-    name: '지혜',
-    uv: 40,
-    pv: 24,
-    amt: 24,
-    score: 100,
-  },
-  {
-    name: '매력',
-    uv: 30,
-    pv: 13,
-    amt: 22,
-    score: 80,
-  },
-  {
-    name: '통솔력',
-    uv: 20,
-    pv: 98,
-    amt: 22,
-    score: 54,
-  },
-  {
-    name: '열정',
-    uv: 27,
-    pv: 39,
-    amt: 20,
-    score: 43,
-  },
-  {
-    name: '사회성',
-    uv: 18,
-    pv: 48,
-    amt: 21,
-    score: 64,
-  },
-  {
-    name: '신뢰도',
-    uv: 23,
-    pv: 38,
-    amt: 25,
-    score: 52,
-  },
-];
+
+// const Arr = (props) => {
+//   const [result,setResult] = useState(props.skills);
+
+  const data = [
+    {
+      name: '지혜',
+      score: 10,
+    },
+    {
+      name: '매력',
+      score: 20,
+    },
+    {
+      name: '통솔력',
+      score: 30,
+    },
+    {
+      name: '열정',
+      score: 20,
+    },
+    {
+      name: '사회성',
+      score: 40,
+    },
+    {
+      name: '신뢰도',
+      score: 50,
+      //score:result[5]
+    },
+  ];
 
 export default class Chart extends PureComponent {
   static demoUrl = 'https://codesandbox.io/s/simple-area-chart-4ujxw';
+
+  
 
   render() {
     return (
@@ -67,7 +56,7 @@ export default class Chart extends PureComponent {
           <XAxis dataKey="name" fontSize={11} />
           <YAxis fontSize={10}/>
           <Tooltip />
-          <Area type="monotone" dataKey="score" stroke="#da3939" fill="#661E1E" />
+          <Area type="monotone" dataKey={data} stroke="#da3939" fill="#661E1E" />
         </AreaChart>
       </ResponsiveContainer>
     );

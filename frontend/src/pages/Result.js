@@ -2,12 +2,31 @@ import React, {useState, useEffect, useRef} from 'react';
 import "../css/Result.css";
 import styled from 'styled-components';
 import Chart from '../components/chart'
+
+// const newArr = [...result];
+//     newArr = newArr.sort((a, b) => b - a);
+//     setResult(newArr);
+
 import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver';
 
 const Result = (props) => {
+
     const [result,setResult] = useState(props.skills);
     const [url,setUrl] = useState(props.image);
+    const [newArr, setNewArr] = useState(result);
+    console.log(result)
+    console.log(url)
+    console.log(newArr)
+
+    const secondArr = [['지혜',result[0]],['매력',result[1]],['통솔력',result[2]],['열정',result[3]],['사회성',result[4]],['신뢰도',result[5]]];
+    console.log(secondArr);
+
+    secondArr.sort((a,b) => b[1]-a[1]);
+    console.log(secondArr);
+
+    
+
     const ResultImg = styled.div`
         width: 200px;
         height: 200px;
@@ -58,36 +77,36 @@ const Result = (props) => {
                 <ResultImg url={url}/>
                 <div className='overView'>
                     <h2><span>O</span>VERVIEW</h2>
-                    <Chart/>
+                    <Chart skills={result}/>
                 </div>
                 <div className='topValue'>
                     <h2><span>T</span>OP 3 VALUE</h2>
                     <div className='topCon'>
                         <div topConA>
                             <div className='title'>
-                                <h4>점수</h4>
-                                <h4>1</h4>
+                                <h4>{secondArr[1][0]}</h4>
+                                <h4>{secondArr[1][1]}</h4>
                             </div>
                             <div className='statBar'>
-                                <StatRange width={result[0]}/>
+                                <StatRange width={secondArr[1][1]}/>
                             </div>
                         </div>
                         <div topConB>
                             <div className='title'>
-                                <h4>점수</h4>
-                                <h4>1</h4>
+                                <h4>{secondArr[2][0]}</h4>
+                                <h4>{secondArr[2][1]}</h4>
                             </div>
                             <div className='statBar'>
-                                <StatRange width={result[0]}/>
+                                <StatRange width={secondArr[2][1]}/>
                             </div>
                         </div>
                         <div topConC>
                             <div className='title'>
-                                <h4>점수</h4>
-                                <h4>1</h4>
+                                <h4>{secondArr[3][0]}</h4>
+                                <h4>{secondArr[3][1]}</h4>
                             </div>
                             <div className='statBar'>
-                                <StatRange width={result[0]}/>
+                                <StatRange width={secondArr[3][1]}/>
                             </div>
                         </div>
                     </div>
