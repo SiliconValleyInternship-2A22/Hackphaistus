@@ -44,6 +44,7 @@ function Upload(props){
         console.log(response.data);
         props.onSubmit(response.data.url,response.data.result);
         setIsLoading(false);
+        handleTop2();
         // const task_id = response.data.task;
         // const req = setInterval(() => {
         //   axios.post("http://localhost:5000/api/printResult",{'id':task_id}).then(response=>{

@@ -19,7 +19,7 @@ function Main(){
                 <div className='mainImg' />
                 <div className='mainTitle'>
                     <div className='titleCon1'>
-                        <h1 className='hackphaistus'><span className='pink'>HACK</span>PH</h1>
+                        <h1 className='hackphaistus'><span>HACK</span>PH</h1>
                         <h1 className='hackphaistus'>AISTUS</h1>
                     </div>
                 </div>

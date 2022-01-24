@@ -84,6 +84,15 @@ const Result = (props) => {
                     <div className='topCon'>
                         <div topConA>
                             <div className='title'>
+                                <h4>{secondArr[0][0]}</h4>
+                                <h4>{secondArr[0][1]}</h4>
+                            </div>
+                            <div className='statBar'>
+                                <StatRange width={secondArr[0][1]}/>
+                            </div>
+                        </div>
+                        <div topConB>
+                            <div className='title'>
                                 <h4>{secondArr[1][0]}</h4>
                                 <h4>{secondArr[1][1]}</h4>
                             </div>
@@ -91,22 +100,13 @@ const Result = (props) => {
                                 <StatRange width={secondArr[1][1]}/>
                             </div>
                         </div>
-                        <div topConB>
+                        <div topConC>
                             <div className='title'>
                                 <h4>{secondArr[2][0]}</h4>
                                 <h4>{secondArr[2][1]}</h4>
                             </div>
                             <div className='statBar'>
                                 <StatRange width={secondArr[2][1]}/>
-                            </div>
-                        </div>
-                        <div topConC>
-                            <div className='title'>
-                                <h4>{secondArr[3][0]}</h4>
-                                <h4>{secondArr[3][1]}</h4>
-                            </div>
-                            <div className='statBar'>
-                                <StatRange width={secondArr[3][1]}/>
                             </div>
                         </div>
                     </div>

@@ -11,7 +11,7 @@
 ::-webkit-scrollbar { display: none; }
 
 .defalutBGC{
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     background-color: #040404;
 }
@@ -25,7 +25,6 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    
 }
 
 .mainCon{
@@ -37,26 +36,25 @@
 }
 
 .backLight{
-    width: 55%;
-    height: 65%;
-    margin: auto;
+    width: 50vw;
+    height: 68vh;
     opacity: 90%;
     
-    position: relative;
+    position: absolute;
     z-index: 0;
-    bottom: 720px;
+    bottom: 20%;
+    left: 26vw;
+    margin: auto;
     
     background-image: url('../img/backlight.png');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-
-    
 }
 
 .mainImg{
-    width: 42%;
-    height: 54%;
+    width: 35vw;
+    height: 50vh;
     margin: auto;
     margin-top: 14%;
 
@@ -70,16 +68,17 @@
 }
 
 .mainTitle{
-    width: 100%;
-    height: 120px;
+    width: 85vw;
+    height: 15vh;
 
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 
-    position: relative;
-    bottom: 200px;
+    position: absolute;
+    bottom: 45vh;
     z-index: 4;
+
 
     /* border: solid 1px rgb(158, 204, 49); */
 }
@@ -91,26 +90,29 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-
     /* border: solid 1px aqua; */
 }
 
 .hackphaistus{
-    font-size: 5.1em;
+    font-size: 5.1rem;
     letter-spacing: 0.08em;
     font-weight: 800;
     color: #f6f6f6;
     text-shadow: 4px 4px 4px #000000;
 }
 
-.pink{
+span{
+    font-size: 1em;
+    letter-spacing: 0.08em;
+    font-weight: 800;
     color: #FE5657;
+    text-shadow: 4px 4px 4px #000000;
 }
 
 .start{
     float: right;
     clear: right;
-    margin-top: 174px;
+    margin-top: 16%;
     margin-right: 13%;
 
     width: 13vw;
@@ -122,20 +124,22 @@
     box-shadow: 2px 2px 4px #000000;
 
     color: #f4f4f4;
-    font-size: 10px;
+    font-size: 0.7rem;
     font-weight: 600;
     text-shadow: 2px 2px 4px #070707 25%;
 
     padding: auto;
+
+    z-index: 7;
 }
 
 .subCon_B{
-    width: 100%;
-    height: 120px;
+    width: 85vw;
+    height: 25%;
 
-    position: relative;
+    position: absolute;
     z-index: 1;
-    bottom: 380px;
+    bottom: 55vh;
 }
 
 .subText{
@@ -147,11 +151,13 @@
     justify-content: space-between;
 
     position: relative;
+    top: 10vh;
     z-index: 0;
+
 }
 
 .subTitle_B{
-    font-size: 5.1em;
+    font-size: 5.1rem;
     letter-spacing: 0.08em;
     font-weight: 800;
     -webkit-text-stroke-width: 1.2px;
@@ -160,32 +166,32 @@
 
 .hide_B{
     width: 100%;
-    height: 60%;
+    height: 100px;
     background-color: #040404;
 
     position: relative;
     z-index: 1;
-    bottom: 75px;
+    bottom: 48px;
 }
 
 .subCon_U{
-    width: 100%;
-    height: 120px;
+    width: 85vw;
+    height: 25%;
 
-    position: relative;
-    z-index: 2;
-    bottom: 471px;
+    position: absolute;
+    z-index: 1;
+    bottom: 50vh;
 
 }
 
 .hide_U{
     width: 100%;
-    height: 60%;
+    height: 80px;
     background-color: #040404;
 
     position: relative;
     z-index: 1;
-    bottom: 75px;
+    bottom: 48px;
 }
 
 .deco{
@@ -234,7 +240,7 @@
 }
 
 .first{
-    font-size: 10px;
+    font-size: 0.6rem;
     font-weight: 700;
     color: #d4d4d4;
     transform: rotate(-90deg);
@@ -247,7 +253,7 @@
 }
 
 .year{
-    font-size: 10px;
+    font-size: 0.6rem;
     font-weight: 700;
     color: #d4d4d4;
     transform: rotate(-90deg);
@@ -260,7 +266,7 @@
 }
 
 .SV{
-    font-size: 10px;
+    font-size: 0.6rem;
     font-weight: 700;
     color: #d4d4d4;
     transform: rotate(-90deg);
@@ -272,42 +278,41 @@
     z-index: 7;
 }
 
-@media (min-width: 1920px) {
-    .backLight{
-        bottom: 1080px;
-    }
+/* @media all and (min-width: 1024px) and (max-width: 1260px) {
+    html { font-size: 83%; }
+} */
 
-    .hackphaistus{
-        font-size: 8.5em;
-    }
-
-    .subTitle_B{
-        font-size: 8.5em;
-        -webkit-text-stroke-width: 2px;
-        
-    }
-
-    .subCon_U{
-        bottom: 632px;
-    
-    }
-
-    .subCon_B{
-        bottom: 548px;
-    }
+@media all and (min-width: 1280px) and (max-width: 1430px) {
+    html { font-size: 115%; }
 
     .hide_U{
-        height: 80%;
+        height: 40%;
         bottom: 60px;
     }
 
     .hide_B{
         height: 60%; 
-        bottom: 62px;
+        bottom: 60px;
     }
 
-    .mainTitle{
-        bottom: 350px;
+    .start{
+        margin-top: 18%;
+    }
+
+    
+}
+
+@media all and (min-width: 1440px) and (max-width: 1650px) {
+    html { font-size: 125%; }
+
+    .hide_U{
+        height: 40%;
+        bottom: 90px;
+    }
+
+    .hide_B{
+        height: 60%; 
+        bottom: 90px;
     }
 
     .first{
@@ -317,12 +322,12 @@
         bottom: 350px;
     
     }
-    
+
     .year{
         font-size: 14px;
     
-        right: 712px;
-        bottom: 1790px;
+        right: 600px;
+        bottom: 1600px;
     
     }
     
@@ -337,6 +342,109 @@
     .deco{
         bottom: 190px;   
         left: 145px; 
+    }
+
+    .start{
+        margin-top: 18%;
+    }
+}
+
+@media all and (min-width: 1680px) and (max-width: 1910px) {
+    html { font-size: 150%; }
+
+    .hide_U{
+        height: 40%;
+        bottom: 80px;
+    }
+
+    .hide_B{
+        height: 60%; 
+        bottom: 80px;
+    }
+
+    .first{
+        font-size: 14px;
+
+        left: 750px;
+        bottom: 350px;
+    
+    }
+
+    .year{
+        font-size: 14px;
+    
+        right: 600px;
+        bottom: 1600px;
+    
+    }
+    
+    .SV{
+        font-size: 14px;
+
+        left: 752px;
+        bottom: 1190px;
+
+    }
+
+    .deco{
+        bottom: 190px;   
+        left: 145px; 
+    }
+
+    .start{
+        margin-top: 18.5%;
+    }
+}
+
+@media (min-width: 1920px) {
+
+    html { font-size: 170%; }
+
+     .subTitle_B{
+        -webkit-text-stroke-width: 2px;
+    }
+
+    .hide_U{
+        height: 40%;
+        bottom: 100px;
+    }
+
+    .hide_B{
+        height: 60%; 
+        bottom: 100px;
+    }
+
+    .first{
+        font-size: 14px;
+
+        left: 750px;
+        bottom: 350px;
+    
+    }
+    
+    .year{
+        font-size: 14px;
+    
+        right: 712px;
+        bottom: 1820px;
+    
+    }
+    
+    .SV{
+        font-size: 14px;
+
+        left: 752px;
+        bottom: 1190px;
+
+    }
+
+    .deco{
+        bottom: 190px;   
+        left: 145px; 
+    }
+
+    .start{
+        margin-top: 18%;
     }
 }
 

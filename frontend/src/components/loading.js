@@ -6,13 +6,13 @@ function Loading () {
     const Flex = styled.div`
     position: absolute;
     left: 40.5vw;
-    top: 180vh;
+    top: 181vh;
 `;
 
 
     return(
         <Flex>
-            <TailSpin color="#FE5657" height={30} width={30} />
+            <TailSpin color="#FE5657" height={40} width={40} />
         </Flex>
     );
 }
