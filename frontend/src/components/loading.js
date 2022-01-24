@@ -6,7 +6,7 @@ function Loading () {
     const Flex = styled.div`
     position: absolute;
     left: 40.5vw;
-    top: 181vh;
+    top: 178.5vh;
 `;
 
 

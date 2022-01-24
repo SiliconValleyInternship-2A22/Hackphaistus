@@ -1,5 +1,6 @@
 import React, { PureComponent, useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import "../css/CustomTT.css";
 
 const Chart = (props) => {
     const [result,setResult] = useState(props.skills);
@@ -30,6 +31,8 @@ const Chart = (props) => {
         score: result[5],
       },
     ];  
+
+
     return (
       <ResponsiveContainer width="93%" height="80%">
         <AreaChart

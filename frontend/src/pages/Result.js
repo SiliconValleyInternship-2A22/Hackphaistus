@@ -2,11 +2,6 @@ import React, {useState, useEffect, useRef} from 'react';
 import "../css/Result.css";
 import styled from 'styled-components';
 import Chart from '../components/chart'
-
-// const newArr = [...result];
-//     newArr = newArr.sort((a, b) => b - a);
-//     setResult(newArr);
-
 import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver';
 
@@ -129,9 +124,9 @@ const Result = (props) => {
                     </div>
                     <div className='statContainer'>
                     <h3><span>매</span>력</h3>
-                        <p> 지혜로운 사람은 평소 사리를 분별하며 적절히 처리하는 능력이 뛰어납니다. 이들의 
-                            특징은 평소 주변 사람들에 대한 이해가 뛰어나고, 효율적으로 자신의 지식 및 주변 환경을 
-                            이용하여 원하는 결과를 생성하는 것입니다.</p>
+                        <p> 매력있는 사람은 타인의 시선을 끄는 능력이 뛰어납니다. 관상학적으로 매력이 있는 사람은 
+                            도화가 있는 사람을 의미하며, 이는 인간 관계에서 경쟁력을 가질 수 있지만 한편으로는 불필요한 
+                            갈등을 겪을 수 있습니다.</p>
                         <div className='title'>
                             <h4>점수</h4>
                             <h4>{result[1]}</h4>
@@ -142,9 +137,8 @@ const Result = (props) => {
                     </div>
                     <div className='statContainer'>
                     <h3><span>통</span>솔력</h3>
-                        <p> 지혜로운 사람은 평소 사리를 분별하며 적절히 처리하는 능력이 뛰어납니다. 이들의 
-                            특징은 평소 주변 사람들에 대한 이해가 뛰어나고, 효율적으로 자신의 지식 및 주변 환경을 
-                            이용하여 원하는 결과를 생성하는 것입니다.</p>
+                        <p> 통솔력이 뛰어난 사람은 주변 사람을 이끌고 일을 효율적으로 해결하는 능력이 뛰어납니다. 이들은 평소 
+                            주변 사람들을 이끌어 공통의 목표를 달성하는데 능하며, 무엇이든 강단있게 해결해나갈 수 있습니다.</p>
                         <div className='title'>
                             <h4>점수</h4>
                             <h4>{result[2]}</h4>
@@ -155,9 +149,8 @@ const Result = (props) => {
                     </div>
                     <div className='statContainer'>
                     <h3><span>열</span>정</h3>
-                        <p> 지혜로운 사람은 평소 사리를 분별하며 적절히 처리하는 능력이 뛰어납니다. 이들의 
-                            특징은 평소 주변 사람들에 대한 이해가 뛰어나고, 효율적으로 자신의 지식 및 주변 환경을 
-                            이용하여 원하는 결과를 생성하는 것입니다.</p>
+                        <p> 열정이 있는 사람은 높은 집중력과 적극성을 무언가를 해냅니다. 이를 통해 얻는 성취감을 좋아하고, 
+                            배움을 게을리하지 않습니다. 이러한 특성 떄문에, 이들 중에는 사회적 성취를 이룬 사람이 많습니다.</p>
                         <div className='title'>
                             <h4>점수</h4>
                             <h4>{result[3]}</h4>
@@ -168,9 +161,8 @@ const Result = (props) => {
                     </div>
                     <div className='statContainer'>
                     <h3><span>사</span>회성</h3>
-                        <p> 지혜로운 사람은 평소 사리를 분별하며 적절히 처리하는 능력이 뛰어납니다. 이들의 
-                            특징은 평소 주변 사람들에 대한 이해가 뛰어나고, 효율적으로 자신의 지식 및 주변 환경을 
-                            이용하여 원하는 결과를 생성하는 것입니다.</p>
+                        <p> 사회성이 뛰어난 사람은 타인으로부터 배척받지 않고 호감을 얻는 능력이 뛰어납니다. 이들은 눈치가 빠르고, 
+                            상대의 기분을 매우 세심하게 알아차립니다. 또한 이들은 사고가 유연하여 어떤 문제에 대한 대처능력이 뛰어납니다.</p>
                         <div className='title'>
                             <h4>점수</h4>
                             <h4>{result[4]}</h4>
@@ -181,9 +173,8 @@ const Result = (props) => {
                     </div>
                     <div className='statContainer'>
                     <h3><span>신</span>뢰도</h3>
-                        <p> 지혜로운 사람은 평소 사리를 분별하며 적절히 처리하는 능력이 뛰어납니다. 이들의 
-                            특징은 평소 주변 사람들에 대한 이해가 뛰어나고, 효율적으로 자신의 지식 및 주변 환경을 
-                            이용하여 원하는 결과를 생성하는 것입니다.</p>
+                        <p> 신뢰도를 주는 사람은 믿음직스럽고, 정직한 인상을 가집니다. 이들은 정의롭고 가치관이 뚜렷하여, 주변 사람들은 
+                            이들을 호감있는 인물로 생각할 가능성이 높습니다. 이들은 비교적 쉽게 타인의 신뢰를 얻습니다.</p>
                         <div className='title'>
                             <h4>점수</h4>
                             <h4>{result[5]}</h4>
