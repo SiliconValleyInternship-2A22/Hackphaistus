@@ -45,7 +45,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            image = drawPlot(image, center_coordinates, 10, (0,0,255), -1)
+            image = drawPlot(image, center_coordinates, 5, (43,217,250), -1)
             
         '''face = (329, 713) (334, 783) (344, 851) (355, 921) (376, 990) (414, 1049) (469, 1100)(534, 1137)
         (610, 1148)(684, 1135)(746, 1095)(799, 1047)(834, 989)(855, 922)(865, 855)(876, 788)(880, 722)'''
@@ -65,7 +65,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            image = drawPlot(image, center_coordinates, 10, (10,255,0), -1)
+            image = drawPlot(image, center_coordinates, 5, (215,138,44), -1)
             '''[383, 421, 474, 529, 582] [655, 624, 615, 623, 640]'''
         featureX.append(tmpX)
         featureY.append(tmpY)
@@ -82,7 +82,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1])) 
             center_coordinates = (int(part[0]),int(part[1]))
-            image = drawPlot(image, center_coordinates, 10, (10,255,0), -1)
+            image = drawPlot(image, center_coordinates, 5, (153,201,51), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -98,7 +98,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            image = drawPlot(image, center_coordinates, 10, (10,200,10), -1)
+            image = drawPlot(image, center_coordinates, 5, (87,86,254), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -114,7 +114,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            image = drawPlot(image, center_coordinates, 10, (10,200,10), -1)
+            image = drawPlot(image, center_coordinates, 5, (87,86,254), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -130,7 +130,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            image = drawPlot(image, center_coordinates, 10, (255,255,0), -1)
+            image = drawPlot(image, center_coordinates, 5, (61, 142, 255), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -145,7 +145,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            image = drawPlot(image, center_coordinates, 10, (255,255,0), -1)
+            image = drawPlot(image, center_coordinates, 5, (61, 142, 255), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -160,7 +160,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            image = drawPlot(image, center_coordinates, 10, (150,150,0), -1)
+            image = drawPlot(image, center_coordinates, 5, (244,244,244), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
@@ -176,7 +176,7 @@ def main(url):
             tmpX.append(int(part[0]))
             tmpY.append(int(part[1]))
             center_coordinates = (int(part[0]),int(part[1]))
-            image = drawPlot(image, center_coordinates, 10, (150,150,0), -1)
+            image = drawPlot(image, center_coordinates, 5, (244,244,244), -1)
         featureX.append(tmpX)
         featureY.append(tmpY)
 
