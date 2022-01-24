@@ -15,15 +15,15 @@ const Result = (props) => {
     const [result,setResult] = useState(props.skills);
     const [url,setUrl] = useState(props.image);
     const [newArr, setNewArr] = useState(result);
-    console.log(result)
-    console.log(url)
-    console.log(newArr)
+    // console.log(result)
+    // console.log(url)
+    // console.log(newArr)
 
     const secondArr = [['지혜',result[0]],['매력',result[1]],['통솔력',result[2]],['열정',result[3]],['사회성',result[4]],['신뢰도',result[5]]];
-    console.log(secondArr);
+    //console.log(secondArr);
 
     secondArr.sort((a,b) => b[1]-a[1]);
-    console.log(secondArr);
+    //console.log(secondArr);
 
     
 
@@ -82,7 +82,7 @@ const Result = (props) => {
                 <div className='topValue'>
                     <h2><span>T</span>OP 3 VALUE</h2>
                     <div className='topCon'>
-                        <div topConA>
+                        <div>
                             <div className='title'>
                                 <h4>{secondArr[0][0]}</h4>
                                 <h4>{secondArr[0][1]}</h4>
@@ -91,22 +91,22 @@ const Result = (props) => {
                                 <StatRange width={secondArr[0][1]}/>
                             </div>
                         </div>
-                        <div topConB>
+                        <div>
+                            <div className='title'>
+                                <h4>{secondArr[1][0]}</h4>
+                                <h4>{secondArr[1][1]}</h4>
+                            </div>
+                            <div className='statBar'>
+                                <StatRange width={secondArr[0][1]}/>
+                            </div>
+                        </div>
+                        <div>
                             <div className='title'>
                                 <h4>{secondArr[1][0]}</h4>
                                 <h4>{secondArr[1][1]}</h4>
                             </div>
                             <div className='statBar'>
                                 <StatRange width={secondArr[1][1]}/>
-                            </div>
-                        </div>
-                        <div topConC>
-                            <div className='title'>
-                                <h4>{secondArr[2][0]}</h4>
-                                <h4>{secondArr[2][1]}</h4>
-                            </div>
-                            <div className='statBar'>
-                                <StatRange width={secondArr[2][1]}/>
                             </div>
                         </div>
                     </div>
