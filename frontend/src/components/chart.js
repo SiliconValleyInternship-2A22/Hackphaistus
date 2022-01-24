@@ -1,45 +1,35 @@
 import React, { PureComponent, useState, useEffect } from 'react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
-
-const AreachartArr = (props) => {
-  const [result,setResult] = useState(props.skills);
-  
-  const data = [
-    {
-      name: '지혜',
-      score: result[0],
-    },
-    {
-      name: '매력',
-      score: result[1],
-    },
-    {
-      name: '통솔력',
-      score: result[2],
-    },
-    {
-      name: '열정',
-      score: result[3],
-    },
-    {
-      name: '사회성',
-      score: result[4],
-    },
-    {
-      name: '신뢰도',
-      score: result[5],
-    },
-  ];
-}
-
-
-export default class Chart extends PureComponent {
-  static demoUrl = 'https://codesandbox.io/s/simple-area-chart-4ujxw';
-
-  
-
-  render() {
+const Chart = (props) => {
+    const [result,setResult] = useState(props.skills);
+    console.log(props.skills)
+    const data = [
+      {
+        name: '지혜',
+        score: result[0],
+      },
+      {
+        name: '매력',
+        score: result[1],
+      },
+      {
+        name: '통솔력',
+        score: result[2],
+      },
+      {
+        name: '열정',
+        score: result[3],
+      },
+      {
+        name: '사회성',
+        score: result[4],
+      },
+      {
+        name: '신뢰도',
+        score: result[5],
+      },
+    ];  
     return (
       <ResponsiveContainer width="93%" height="80%">
         <AreaChart
@@ -61,5 +51,7 @@ export default class Chart extends PureComponent {
         </AreaChart>
       </ResponsiveContainer>
     );
-  }
 }
+
+
+export default Chart;

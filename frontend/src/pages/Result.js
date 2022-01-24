@@ -102,11 +102,11 @@ const Result = (props) => {
                         </div>
                         <div>
                             <div className='title'>
-                                <h4>{secondArr[1][0]}</h4>
-                                <h4>{secondArr[1][1]}</h4>
+                                <h4>{secondArr[2][0]}</h4>
+                                <h4>{secondArr[2][1]}</h4>
                             </div>
                             <div className='statBar'>
-                                <StatRange width={secondArr[1][1]}/>
+                                <StatRange width={secondArr[2][1]}/>
                             </div>
                         </div>
                     </div>
