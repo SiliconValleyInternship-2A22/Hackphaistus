@@ -107,6 +107,7 @@ const Result = (props) => {
                     </div>
                 </div>
             </div>
+            <div id='topWrap'>
             <div className='secondpart'>
                 <div className='containerWrap'>
                     <div className='statContainer'>
@@ -184,6 +185,7 @@ const Result = (props) => {
                         </div>
                     </div>
                 </div>
+            </div>
             </div>
             <div className='lastPart'>
                 <button className='restartBtn' onClick={onRefresh}>Restart</button>
