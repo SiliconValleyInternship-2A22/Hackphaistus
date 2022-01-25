@@ -1,27 +1,16 @@
 import React, {useState, useEffect, useRef} from 'react';
 import "../css/Result.css";
 import styled from 'styled-components';
-import Chart from '../components/chart'
+import Chart from '../components/chart';
 import domtoimage from 'dom-to-image';
 import { saveAs } from 'file-saver';
 
 const Result = (props) => {
-
     const [result,setResult] = useState(props.skills);
     const [url,setUrl] = useState(props.image);
     const [newArr, setNewArr] = useState(result);
-    // console.log(result)
-    // console.log(url)
-    // console.log(newArr)
-
     const secondArr = [['지혜',result[0]],['매력',result[1]],['통솔력',result[2]],['열정',result[3]],['사회성',result[4]],['신뢰도',result[5]]];
-    //console.log(secondArr);
-
     secondArr.sort((a,b) => b[1]-a[1]);
-    //console.log(secondArr);
-
-    
-
     const ResultImg = styled.div`
         width: 200px;
         height: 200px;
@@ -30,30 +19,12 @@ const Result = (props) => {
         background-size: cover;
         margin-right: 27px;
         margin-top: 10px;
-    `
+    `;
     const StatRange = styled.div`
     width: ${props => props.width}%;
     height: 100%;
     background-color: #FE5657;
-`;
-    // const onSaveResult = () => {
-    //     const final = {data:data}
-    //     axios({
-	// 		url: 'http://localhost:5000/api/exportResult', //your url
-	// 		method: 'POST',
-	// 		data: final,
-	// 		responseType: 'blob', // important
-	// 	  })
-	// .then((response) => {
-	// 	const url = window.URL.createObjectURL(new Blob([response.data]));
-	// 	const link = document.createElement('a');
-	// 	link.href = url;
-	// 	link.setAttribute('download', 'result.csv'); //or any other extension
-	// 	document.body.appendChild(link);
-	// 	link.click();
-	//  });
-    // }
-
+    `;
     const onRefresh = () => {
         window.location.reload();
     }
@@ -61,15 +32,29 @@ const Result = (props) => {
     const onDownloadBtn = () => {
         const resultCap = resultRef.current;
         domtoimage.toBlob(resultCap)
-        .then((blob) => {
-        saveAs(blob, 'Hackphaistus.png');
+        .then(function (blob) {
+            window.saveAs(blob, 'Hackphaistus.png');
         });
-    };
+        };
+
+        // resultCap.crossOrigin = 'Anonymous';
+        // domtoimage.toBlob(resultCap, { cacheBust: true })
+        // .then((blob) => {
+        // window.saveAs(blob, 'Hackphaistus.png');
+        // });
+    //     let options = { "cacheBust": true }
+    //     domtoimage.toJpeg(resultCap, options)
+    // .then(function (dataUrl) {
+    //     var link = document.createElement('a');
+    //     link.download = 'my-image-name.jpeg';
+    //     link.href = dataUrl;
+    //     link.click();
+    // });
 
     return(
-        <div className='defalutBGC3' ref={resultRef}>
+        <div className='defalutBGC3'>
             <div className='firstpart'>
-                <ResultImg url={url}/>
+                <ResultImg url={url} crossorigin="anonymous"/>
                 <div className='overView'>
                     <h2><span>O</span>VERVIEW</h2>
                     <Chart skills={result}/>
@@ -109,7 +94,7 @@ const Result = (props) => {
             </div>
             <div id='topWrap'>
             <div className='secondpart'>
-                <div className='containerWrap'>
+                <div className='containerWrap' crossOrigin="anonymous">
                     <div className='statContainer'>
                         <h3><span>지</span>혜</h3>
                         <p>지혜로운 사람은 평소 사리를 분별하며 적절히 처리하는 능력이 뛰어납니다. 이들의 
@@ -189,7 +174,7 @@ const Result = (props) => {
             </div>
             <div className='lastPart'>
                 <button className='restartBtn' onClick={onRefresh}>Restart</button>
-                <button className='saveBtn' onClick={onDownloadBtn}>Save</button>
+                <button className='saveBtn' onClick = {onDownloadBtn}>Save</button>
             </div>
         </div>
     );
