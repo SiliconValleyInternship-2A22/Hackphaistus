@@ -18,14 +18,8 @@ Hackphaistus🔥는 사용자의 관상을 분석하여, 능력치를 제시해�
 
 
 
-### Design Prototype
+## Design Prototype
 [Figma Prototype](https://www.figma.com/file/PS2Uh2ZoxMXotOkz6aZg1w/Hackphaistus-Prototype?node-id=0%3A1)
-
-
-
-
-### System Architecture
-![0125_System Architecture](https://user-images.githubusercontent.com/85851785/151111455-73adc106-d221-4038-80dc-494793eb7bbc.png)
 
 
 
@@ -47,15 +41,17 @@ Etc : RabbitMQ (Queue), Docker, AWS
 | ![React](https://img.shields.io/badge/React-v17.0.2-20232A?style=flat&logo=react&logoColor=61DAFB) ![JavaScript](https://img.shields.io/badge/javascript-ES6+-%23323330.svg?style=flat&logo=javascript&logoColor=%23F7DF1E) ![NPM](https://img.shields.io/badge/NPM-v6.14.14-%23000000.svg?style=flat&logo=npm&logoColor=white) | ![Flask](https://img.shields.io/badge/flask-v2.0.2-green?logo=flask) ![Python](https://img.shields.io/badge/python-v3.8.8-3670A0?style=flat&logo=python&logoColor=ffdd54) ![Swagger](https://img.shields.io/badge/Swagger-v2.9.2-%23Clojure?style=flat&logo=swagger) ![Gunicorn](https://img.shields.io/badge/gunicorn-v20.1.0-darkgreen?logo=gunicorn) ![RabbitMQ](https://img.shields.io/badge/rabbitmq-v3.9.13-orange?logo=rabbitmq) ![OpenCV](https://img.shields.io/badge/opencv-v4.5.5.62-%23white.svg?style=flat&logo=opencv) ![PyTorch](https://img.shields.io/badge/PyTorch-v1.10.1-%23EE4C2C.svg?style=flat&logo=PyTorche) ![MySQL](https://img.shields.io/badge/mysql-v8.0.27-%2300f.svg?style=flat&logo=mysql) | ![Docker](https://img.shields.io/badge/docker-v20.10.22-%230db7ed.svg?style=flat&logo=docker) ![AWS](https://img.shields.io/badge/AWS-%23FF9900.svg?style=flat&logo=amazon-aws) ![AmazonS3](https://img.shields.io/badge/amazons3-red?logo=amazons3) ![Nginx](https://img.shields.io/badge/Nginx-v1.20.2-brightgreen?logo=nginx) ![github](https://img.shields.io/badge/github-gray?logo=github) ![VScode](https://img.shields.io/badge/VScode-v1.52.1-blue?logo=visual-studio-code) [![Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Naereen/badges)|
 
 
-
-
 ### Used Model
 [Face Alignment](https://github.com/davisking/dlib) from Dlib library
 
 
+### System Architecture
+![0125_System Architecture](https://user-images.githubusercontent.com/85851785/151111455-73adc106-d221-4038-80dc-494793eb7bbc.png)
 
 
-### Initialization
+
+
+## Initialization
 * Clone the repository
 ```
 $ git clone https://github.com/SiliconValleyInternship-2A22/Hackphaistus.git <br/>
@@ -72,7 +68,7 @@ $ docker-compose up --build
 
 
 
-### Detail Introduction of the Service 
+## Detail Introduction of the Service 
 * [Presentation Documentation]()
 * [Design Doc](https://bouncy-tuck-1ec.notion.site/Read-me-566537ed671845d68302e3feb7134329)
 * [Flagly](https:flagly.org/courses/328/)
@@ -80,7 +76,7 @@ $ docker-compose up --build
 
 
 
-## TEAM _ 2A22
+## ✏️TEAM _ 2A22
   
   2022 Silicon Valley Winter Online Internship Program - Team A '2A22'
   
