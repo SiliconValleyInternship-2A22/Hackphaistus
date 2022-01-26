@@ -4,7 +4,6 @@ import "../css/CustomTT.css";
 
 const Chart = (props) => {
     const [result,setResult] = useState(props.skills);
-    console.log(props.skills)
     const data = [
       {
         name: '지혜',

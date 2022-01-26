@@ -1,12 +1,36 @@
 from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 import pymysql
-from connection import s3_connection
-from config import BUCKET_NAME, LOCATION
+# from connection import s3_connection
+# from config import BUCKET_NAME, LOCATION
+from dotenv import load_dotenv
+import os
+load_dotenv()
+BUCKET_NAME = os.environ.get("BUCKET_NAME")
+LOCATION = os.environ.get("LOCATION")
+AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
+AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
+MYSQL_USER=os.environ.get("MYSQL_USER")
+MYSQL_PASSWORD=os.environ.get("MYSQL_PASSWORD")
+RABBITMQ_DEFAULT_USER=os.environ.get("RABBITMQ_DEFAULT_USER")
+RABBITMQ_DEFAULT_PASS=os.environ.get("RABBITMQ_DEFAULT_PASS")
+import boto3
 import adrianb
 import dlibb
 via = Flask(__name__)
 
+def s3_connection():
+    s3 = boto3.client('s3',aws_access_key_id = AWS_ACCESS_KEY,aws_secret_access_key = AWS_SECRET_KEY)
+    return s3
+# MySQL
+db = pymysql.connect(host='db',port=3306,user=MYSQL_USER,passwd=MYSQL_PASSWORD,db='Hackphaistus',charset='utf8')
+# RabbitMQ
+import pika
+credentials = pika.PlainCredentials(RABBITMQ_DEFAULT_USER,RABBITMQ_DEFAULT_PASS)
+connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', credentials))
+channel = connection.channel()
+channel.queue_declare(queue='task_queue', durable=True)
+channel.queue_declare(queue='result_queue', durable=True)
 # CORS(app)
 CORS(via, resources={r'*':{'origins': 'http://localhost:5000'}})
 
@@ -157,7 +181,7 @@ def calculateRatio(url):
     lips = [features[7],C_X[7],C_Y[7]]
     teeth = [features[8],C_X[8],C_Y[8]]
     # 인중 - 턱
-    #코끝 y축 위치는 'nostril’의 3번째 값 / 윗입술 가운데는 lip y [ ] 에서 4번째 값 
+    #코끝 y축 위치는 'nostril'의 3번째 값 / 윗입술 가운데는 lip y [ ] 에서 4번째 값 
     # 아랫입술,아래턱은 최댓값
     n_l_s = nostril[2][2] # nose - lips start
     n_l_e = lips[2][3]    # nose - upperlips end
@@ -204,18 +228,4 @@ print(" [x] Awaiting RPC requests")
 channel.start_consuming() 
 
 if __name__=="__main__":
-    via.run(host="127.0.0.1", port="5005", debug=True)
-'''
-1. 미간 비율 :  3.6
-1번 후 미간 스탯 확인 :  [56, 53, 51, 52, 52, 50]
-3. 윗입술 , 아랫입술 높이 :  31.5 33.5
-3번 후 입술-스탯 확인:  [62, 61, 43, 50, 62, 60]
-4. 입술너비 비율 :  2.2
-4번 후 입술너비 스탯 :  [71, 71, 53, 60, 72, 68]
-5. 눈썹 비율 확인:  4.5
-5번 후 눈썹 모양 스탯 확인 :  [73, 80, 61, 62, 81, 71]
-2. 인중-턱 비율 확인:  2
-필 최종 :  [78, 90, 61, 62, 86, 74] 
-도운 최종 : [75, 76, 47, 57, 81, 72] 
-사나 최종 : [84, 79, 56, 66, 78, 80]
-'''
+    via.run(host="ai", port="5005", debug=True)
