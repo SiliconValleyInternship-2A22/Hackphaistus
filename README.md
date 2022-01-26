@@ -20,6 +20,7 @@ Hackphaistus🔥는 사용자의 관상을 분석하여, 능력치를 제시해�
 
 
 ## System Architecture
+![0125_System Architecture](https://user-images.githubusercontent.com/85851785/151111455-73adc106-d221-4038-80dc-494793eb7bbc.png)
 
 
 ## Tech Stack
@@ -49,6 +50,6 @@ Etc : RabbitMQ (Queue), Docker, AWS
   
   2022 Silicon Valley Winter Online Internship Program - Team A '2A22'
   
-  |👩‍💻 Seoyoung Kim|👩‍🎨 Su-A Jang|🕵️‍♀️ Dayeon Hong|
+  |👩‍💻 Seoyoung Kim|👩‍🎨 Su-A Jang|🕵️‍ Dayeon Hong|
 |:------:|:------:|:------:|
 |**[@ksy990628](https://github.com/ksy990628)**|**[@su-aJ815](https://github.com/su-aJ815)**|**[@Dayeon-Hong](https://github.com/Dayeon-Hong)**|
