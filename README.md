@@ -60,9 +60,9 @@ $ docker-compose up --build
 
 
 ## Detail Introduction of the Service 
-[Presentation Documentation]
-[Design Doc](https://bouncy-tuck-1ec.notion.site/Read-me-566537ed671845d68302e3feb7134329)
-[Flagly](https:flagly.org/courses/328/)
+* [Presentation Documentation]()
+* [Design Doc](https://bouncy-tuck-1ec.notion.site/Read-me-566537ed671845d68302e3feb7134329)
+* [Flagly](https:flagly.org/courses/328/)
 
 
 
