@@ -12,8 +12,9 @@ Hackphaistus🔥는 사용자의 관상을 분석하여, 능력치를 제시해�
 
 
 
-### Features
+## Features
 ![대지 1](https://user-images.githubusercontent.com/85851785/151108783-b4fffffb-fed3-4141-891c-72a88e6cac74.png)
+
 
 
 
@@ -22,8 +23,10 @@ Hackphaistus🔥는 사용자의 관상을 분석하여, 능력치를 제시해�
 
 
 
+
 ### System Architecture
 ![0125_System Architecture](https://user-images.githubusercontent.com/85851785/151111455-73adc106-d221-4038-80dc-494793eb7bbc.png)
+
 
 
 
@@ -45,8 +48,10 @@ Etc : RabbitMQ (Queue), Docker, AWS
 
 
 
+
 ### Used Model
 [Face Alignment](https://github.com/davisking/dlib) from Dlib library
+
 
 
 
@@ -66,6 +71,7 @@ $ docker-compose up --build
 
 
 
+
 ### Detail Introduction of the Service 
 * [Presentation Documentation]()
 * [Design Doc](https://bouncy-tuck-1ec.notion.site/Read-me-566537ed671845d68302e3feb7134329)
@@ -74,7 +80,7 @@ $ docker-compose up --build
 
 
 
-### TEAM _ 2A22
+## TEAM _ 2A22
   
   2022 Silicon Valley Winter Online Internship Program - Team A '2A22'
   
