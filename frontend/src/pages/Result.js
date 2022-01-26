@@ -92,7 +92,7 @@ const Result = (props) => {
                     </div>
                 </div>
             </div>
-            <div id='topWrap'>
+            <div id='topWrap' ref={resultRef}>
             <div className='secondpart'>
                 <div className='containerWrap' crossOrigin="anonymous">
                     <div className='statContainer'>
