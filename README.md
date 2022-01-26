@@ -13,7 +13,7 @@ Hackphaistus🔥는 사용자의 관상을 분석하여, 능력치를 제시해�
 
 
 ## Features
-![대지 1](https://user-images.githubusercontent.com/85851785/151108783-b4fffffb-fed3-4141-891c-72a88e6cac74.png)
+![대지 1](https://user-images.githubusercontent.com/85851785/151125372-ee1bc934-44e1-4fc9-808a-2cff3226d84d.png)
 
 
 
