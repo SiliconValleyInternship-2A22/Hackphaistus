@@ -46,7 +46,7 @@ Etc : RabbitMQ (Queue), Docker, AWS
 
 
 ### System Architecture
-![0125_System Architecture](https://user-images.githubusercontent.com/85851785/151111455-73adc106-d221-4038-80dc-494793eb7bbc.png)
+![대지 1 사본](https://user-images.githubusercontent.com/85851785/151126924-3d6256e6-51d0-4a33-8c9b-edbe110d467f.png)
 
 
 
