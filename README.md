@@ -6,7 +6,7 @@ Hackphaistus🔥는 사용자의 관상을 분석하여, 능력치를 제시해�
 
 <img width="1680" alt="스크린샷 2022-01-26 오후 2 17 02" src="https://user-images.githubusercontent.com/85851785/151108007-b8cc7e74-6c06-4bd1-bf9a-a78a4dcc9ff2.png">
 
-![ezgif com-gif-maker-2](https://user-images.githubusercontent.com/85851785/151110004-47aaa139-4df9-48b9-9fb6-3a1c9cdcba65.gif)
+![ezgif com-gif-maker-2](https://user-images.githubusercontent.com/85851785/151111264-cc95fad6-2b38-4f52-bdf2-795bb45d11b7.gif)
 
 
 
