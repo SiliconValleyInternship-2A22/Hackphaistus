@@ -83,6 +83,6 @@ $ docker-compose up --build
   
   2022 Silicon Valley Winter Online Internship Program - Team A '2A22'
   
-  |👩‍💻 Seoyoung Kim|👩‍🎨 Su-A Jang|🕵️‍ Dayeon Hong|
+  |👩‍💻 Seoyeong Kim|👩‍🎨 Su-A Jang|🕵️‍ Dayeon Hong|
 |:------:|:------:|:------:|
 |**[@ksy990628](https://github.com/ksy990628)**|**[@su-aJ815](https://github.com/su-aJ815)**|**[@Dayeon-Hong](https://github.com/Dayeon-Hong)**|
