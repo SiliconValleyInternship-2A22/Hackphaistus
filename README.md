@@ -41,9 +41,30 @@ Etc : RabbitMQ (Queue), Docker, AWS
 
 
 ## Used Model
+[Face Alignment](https://github.com/davisking/dlib) from Dlib library
 
 
 ## Initialization
+* Clone the repository
+```
+$ git clone https://github.com/SiliconValleyInternship-2A22/Hackphaistus.git <br/>
+$ cd Hackphaistus
+```
+
+### Docker
+* docker compose build and up
+```
+$ cd Hackphaistus <br/>
+$ docker-compose up --build
+```
+
+
+## Detail Introduction of the Service 
+[Presentation Documentation]
+[Design Doc](https://bouncy-tuck-1ec.notion.site/Read-me-566537ed671845d68302e3feb7134329)
+[Flagly](https:flagly.org/courses/328/)
+
+
 
 
 ## TEAM _ 2A22
