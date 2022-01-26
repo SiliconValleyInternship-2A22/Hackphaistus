@@ -3,8 +3,18 @@ from skimage import io
 import matplotlib.pyplot as plt
 import os
 import cv2
-from connection import s3_connection
-from config import BUCKET_NAME, LOCATION
+import boto3
+from dotenv import load_dotenv
+import os
+load_dotenv()
+AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
+AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
+BUCKET_NAME = os.environ.get("BUCKET_NAME")
+LOCATION = os.environ.get("LOCATION")
+
+def s3_connection():
+    s3 = boto3.client('s3',aws_access_key_id = AWS_ACCESS_KEY,aws_secret_access_key = AWS_SECRET_KEY)
+    return s3
  
 def drawPlot(image,xy,radius,color,thickness):
     image = cv2.circle(image, xy, radius, color, thickness)

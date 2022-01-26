@@ -3,12 +3,36 @@ from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 from flask_restx import Resource, Api # Swagger
 from werkzeug.datastructures import FileStorage
-from connection import s3_connection
-from config import BUCKET_NAME, LOCATION
-from threading import Thread
+import pymysql
+import boto3
+from dotenv import load_dotenv
+import os
+load_dotenv()
+AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
+AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
+BUCKET_NAME = os.environ.get("BUCKET_NAME")
+LOCATION = os.environ.get("LOCATION")
+MYSQL_USER = os.environ.get("MYSQL_USER")
+MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD")
+RABBITMQ_USER= os.environ.get("RABBITMQ_DEFAULT_USER")
+RABBITMQ_PASSWORD = os.environ.get("RABBITMQ_DEFAULT_PASS")
+
+def s3_connection():
+    s3 = boto3.client('s3',aws_access_key_id = AWS_ACCESS_KEY,aws_secret_access_key = AWS_SECRET_KEY)
+    return s3
 app = Flask(__name__)
 
+# MySQL
+db = pymysql.connect(host='db',port=3306,user=MYSQL_USER,passwd=MYSQL_PASSWORD,db='Hackphaistus',charset='utf8')
 # RabbitMQ
+import pika
+import uuid
+import time
+credentials = pika.PlainCredentials(RABBITMQ_USER,RABBITMQ_PASSWORD)
+connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', credentials))
+channel = connection.channel()
+channel.queue_declare(queue='task_queue', durable=True)
+channel.queue_declare(queue='result_queue', durable=True)
 
 # Swagger API
 api = Api(app,version='1.0',title='Hackphaistus API',description='Hackphaistus REST API 문서')
@@ -18,6 +42,40 @@ file_parser = ns.parser()
 result_parser = ns.parser()
 # CORS(app)
 CORS(app, resources={r'*':{'origins': 'http://localhost:3000'}})
+
+
+class FibonacciRpcClient(object):
+  def __init__(self):
+    credentials = pika.PlainCredentials(RABBITMQ_USER,RABBITMQ_PASSWORD)
+    self.connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', credentials))
+    self.channel = self.connection.channel()
+
+    result = self.channel.queue_declare(queue='', exclusive=True)
+    self.callback_queue = result.method.queue
+    self.channel.basic_consume(
+          queue=self.callback_queue,on_message_callback=self.on_response,auto_ack=True)
+  def on_response(self, ch, method, props, body):
+    if self.corr_id == props.correlation_id:
+      self.response = body
+
+  def call(self, n):
+    self.response = None
+    self.corr_id = str(uuid.uuid4())
+    self.channel.basic_publish(exchange='',routing_key='rpc_queue',properties=pika.BasicProperties(
+                reply_to=self.callback_queue,correlation_id=self.corr_id,),body=str(n))
+    time.sleep(5)
+    while self.response is None:
+      self.connection.process_data_events()
+      return self.response
+
+# fibonacci_rpc = FibonacciRpcClient()
+# print(" [x] Requesting fib(10)")
+# response = fibonacci_rpc.call(10)
+# print(" [.] Got %r" % response)
+
+
+global task_id
+task_id = 0
 
 @ns.route('/')                 
 class Main(Resource):
@@ -29,20 +87,6 @@ class setBtn(Resource):
   def post():
     return 'Server has checked your request';
 
-result = []
-file =''
-
-def setResult(data,filename):
-  global result 
-  result = data
-  global file
-  file = filename
-
-def getResult():
-  global result 
-  global file
-  return result, file
-
 def callback(ch, method, properties, body):
     message = body.decode()
     print("Received: ",message)
@@ -52,14 +96,15 @@ def callback(ch, method, properties, body):
     for i in range(len(arr)-1):
       result.append(int(arr[i])) 
     filename = arr[len(arr)-1]
-    setResult(result,filename)
+    print('RE1:',result)
+    print('RE1:',filename)
+    cursor = db.cursor()
+    global task_id
+    sql = '''
+    INSERT into results(task_id,wisdom,charming,leadership,passion,socialskill,credit,s3url) 
+    VALUES (%s,%s,%s,%s,%s,%s,%s,%s);'''
+    cursor.execute(sql,[task_id,result[0],result[1],result[2],result[3],result[4],result[5],filename])
     #channel.close()
-
-def receiveFromDetect():
-  # receive result
-  channel.basic_qos(prefetch_count=1)
-  channel.basic_consume(queue='result_queue', on_message_callback=callback)
-  channel.start_consuming()  
 
 @ns.route('/fileUpload', methods = ['POST'])
 class fileUpload(Resource):
@@ -79,18 +124,22 @@ class fileUpload(Resource):
     s3 = s3_connection()
     s3.put_object(Bucket = BUCKET_NAME,Body = file,Key = file.filename,ContentType = file.content_type)
     dataUrl = BUCKET_NAME+"-"+filename+"-"+filename
-    sendToDetect(dataUrl)
-    return {'Task:', dataUrl}
+    Skills, Url = sendToDetect(dataUrl)
+    return jsonify({'result':Skills, 'url':Url})
 
 # 받은 img 파일 -> Flask -> RabbitMQ (-> Python -> AI -> Python) -> Flask
 def sendToDetect(url):
   message = str(url)
   # send task
-  channel.basic_publish(exchange='',routing_key='task_queue',body=message,
-    properties=pika.BasicProperties(
-        delivery_mode=pika.spec.PERSISTENT_DELIVERY_MODE
-    ))
-  print(" [x] Sent %r" % message)  
+  fibonacci_rpc = FibonacciRpcClient()
+  print(" [x] Requesting fib(10)")
+  response = fibonacci_rpc.call(message)
+  print(" [.] Got:",response)
+  result = response.decode('utf-8')
+  result = result.split('-')
+  skills = [int(result[0]),int(result[1]),int(result[2]),int(result[3]),int(result[4]),int(result[5])]
+  url = 'https://'+BUCKET_NAME+'.s3.'+LOCATION+'.amazonaws.com/'+result[6]+'_result.png'
+  return skills,url
   #receiveFromDetect()
 
 @ns.route('/printResult')
@@ -100,20 +149,29 @@ class printResult(Resource):
   @ns.response(400, "잘못된 요청")
   @ns.response(500, "서버에서 에러 발생")
   def post(self):
-    global file
-    filename = str(file) + '_result.png'
-    s3url = f'https://{BUCKET_NAME}.s3.{LOCATION}.amazonaws.com/{filename}'
-    global result
-    print(file,filename,result)
-    return {"file" : str(file), "url" : s3url, "result" : result}
+    data = request.get_json()
+    print(data)
+    initID = data['id']
+    print(initID)
+    ID = int(initID)
+    print(ID)
+    cursor = db.cursor()
+    sql = '''
+	  SELECT wisdom, charming, leadership, passion, socialskill, credit, s3url 
+    FROM results
+	  WHERE task_id = %s;'''
+    cursor.execute(sql,[ID])
+    tlist = cursor.fetchall()
+    result = [int(tlist[0][0]),int(tlist[0][1]),int(tlist[0][2]),int(tlist[0][3]),int(tlist[0][4]),int(tlist[0][5])]
+    filename = str(tlist[0][6])
+    print(result)
+    print(filename)
+    s3url = 'https://'+BUCKET_NAME+'.s3.'+LOCATION+'.amazonaws.com/'+filename+'_result.png'
+    return jsonify({'file': filename, 'url':s3url,'result':result})
 
-# channel.basic_qos(prefetch_count=1)
-# channel.basic_consume(queue='result_queue', on_message_callback=callback)
-# thread = Thread(target = channel.start_consuming)
-# thread.start()
 
 if __name__=="__main__":
-  app.run(host="127.0.0.1", port="5000", debug=True)
+  app.run(host="backend", port="5000", debug=True)
 
 
 

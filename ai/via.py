@@ -1,11 +1,36 @@
 from flask import Flask, request, render_template, jsonify
 from flask_cors import CORS
 import pymysql
-from connection import s3_connection
-from config import BUCKET_NAME, LOCATION
-import adrianb
+#import adrianb
 import dlibb
+import boto3
+from dotenv import load_dotenv
+import os
+load_dotenv()
+AWS_ACCESS_KEY = os.environ.get("AWS_ACCESS_KEY")
+AWS_SECRET_KEY = os.environ.get("AWS_SECRET_KEY")
+BUCKET_NAME = os.environ.get("BUCKET_NAME")
+LOCATION = os.environ.get("LOCATION")
+MYSQL_USER = os.environ.get("MYSQL_USER")
+MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD")
+RABBITMQ_USER= os.environ.get("RABBITMQ_DEFAULT_USER")
+RABBITMQ_PASSWORD = os.environ.get("RABBITMQ_DEFAULT_PASS")
+
+def s3_connection():
+    s3 = boto3.client('s3',aws_access_key_id = AWS_ACCESS_KEY,aws_secret_access_key = AWS_SECRET_KEY)
+    return s3
+
 via = Flask(__name__)
+
+# MySQL
+db = pymysql.connect(host='db',port=3306,user=MYSQL_USER,passwd=MYSQL_PASSWORD,db='Hackphaistus',charset='utf8')
+# RabbitMQ
+import pika
+credentials = pika.PlainCredentials(RABBITMQ_USER,RABBITMQ_PASSWORD)
+connection = pika.BlockingConnection(pika.ConnectionParameters('rabbitmq', 5672, '/', credentials))
+channel = connection.channel()
+channel.queue_declare(queue='task_queue', durable=True)
+channel.queue_declare(queue='result_queue', durable=True)
 
 # CORS(app)
 CORS(via, resources={r'*':{'origins': 'http://localhost:5000'}})
@@ -204,7 +229,7 @@ print(" [x] Awaiting RPC requests")
 channel.start_consuming() 
 
 if __name__=="__main__":
-    via.run(host="127.0.0.1", port="5005", debug=True)
+    via.run(host="ai", port="5005", debug=True)
 '''
 1. 미간 비율 :  3.6
 1번 후 미간 스탯 확인 :  [56, 53, 51, 52, 52, 50]
