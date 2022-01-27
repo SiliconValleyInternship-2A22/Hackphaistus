@@ -1,7 +1,5 @@
-version: "1.25"
-
+version: "3"
 services:
-
   frontend:
     build: 
       context: ./frontend 
@@ -9,74 +7,111 @@ services:
      - "3000:3000"
     container_name: frontend-con
     volumes: 
-      - /var/lib/docker/volumes/our-vol/_data
-    network : hackphaistus
+     - ./frontend/:/frontend
+     - build_folder:/frontend/build
+     - ./frontend/node_modules/:/frontend/node_modules
     restart: always
-    #environment:
+    #image: run
     #stdin_open: true
 
-  # mysql_db:
-  #   image: mysql:8.0
-  #   networks: app-tier
-  #   volumes:
-  #   ports:
-  #    - "3306:3306"
-  #   environment:
-  #    - MYSQL_DATABASE=app 
-  #    - MYSQL_USER= #채우기
-  #    - MYSQL_PASSWORD= 
-  #    - MYSQL_ROOT_PASSWORD=
-  #   command: 
+  rabbitmq:
+    image : rabbitmq:3-management
+    container_name: rabbitmq-con
+    env_file :
+      - ./envs/rabbitmq
+    ports:
+     - "5672:5672"
+     - "15672:15672"
+    volumes:
+      - data_rabbitmq:/var/lib/rabbitmq
+    
+  #docker-compose 없이 사용할려면 #이미지설치 : docker pull rabbitmq:3-management
+  #컨테이너 실행: docker run -v rabbitmq:/app -d -p 15672:15672 -p 5672:5672 --name  rabbitmq rabbitmq:3-management
+  
+  db:
+    image: mysql
+    platform: linux/x86_64    # 추가된 라인
+    container_name: mysql-con
+    ports:
+      - "3306:3306"
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+    env_file :
+      - ./envs/mysql
+    volumes:
+      - data_mysql:/var/lib/mysql
+  
+  #docker run --rm -d --name mysql-con -e MYSQL_ROOT_PASSWORD=162girls -v data_mysql:/var/lib/mysql mysql
+  # docker exec -it rabbitmq-con bash  
+  # docker exec -it mysql-con bash
 
   backend:
     build:
       context: ./backend
     ports:
-     - "5000:5000" 
+     - "5000:5000"
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_APP: ./app.py
     container_name: backend-con
-    networks: 
-     - hackphaistus
-    volumes:
-     - /var/lib/docker/volumes/backend/_data
+    expose:
+      - 5000
+    # image: run
     restart: always
-    #command: gunicorn -w 1 -b 0.0.0.0:5000 --timeout=300 run:app
-   
-
-  # rabbit:
-  #  hostname: rabbit
-  #  image : rabbitmq:3-management
-  #  environment:
-  #   - RABBITMQ_DEFAULT_USER= #채우기
-  #   - RABBITMQ_DEFAULT_PASS= 
-  # ports:
-  # networks:
-  #  - app-tier
-
-  nginx :
-    image: nginx:latest
-    ports:
-      - "8080:8080"
+    command: flask run --host=0.0.0.0 --port=5000
     volumes:
-      - 'nginx:/app'
-    depend_on:
-      - frontend-con
+      - ./backend:/usr/local/app/
+    depends_on:
+      - rabbitmq
+      - db
+    links:
+      - rabbitmq
+      - db
+
+  ai:
+    build:
+      context: ./ai
+    ports:
+     - "5005:5005" 
+    environment:
+      FLASK_DEBUG: 1
+      FLASK_APP: ./via.py
+    container_name: ai-con
+    expose:
+      - 5005
+    # image: run
+    restart: always
+    command: flask run --host=0.0.0.0 --port=5005
+    volumes:
+      - ./ai:/usr/local/app/
+    depends_on:
+      - rabbitmq
+      - db
+    links:
+      - rabbitmq
+      - db
+  # nginx 컨테이너(서버)
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:8080
+    volumes:
+      - build_folder:/var/www/frontend
+    depends_on:
       - backend
-    networks:
-      - hackphaistus
-    driver: bridge # 컨테이너를 bridge로 연결
-    restart: always
-
-
-  db: # 서비스 명
-    image: mysql # 사용할 이미지
-    container_name: mysql-con # 컨테이너 이름 설정
-    ports:
-      - "3306:3306" # 접근 포트 설정 (컨테이너 외부:컨테이너 내부)
-    environment: # -e 옵션
+      - frontend
       
-    command: # 명령어 실행
-      - --character-set-server=utf8mb4
-      - --collation-server=utf8mb4_unicode_ci
-    volumes:
-      - /var/lib/docker/volumes/mysql/_data # -v 옵션 (다렉토리 마운트 설정)
-    restart: always
+volumes:
+  data_mysql:
+  data_rabbitmq:
+  build_folder: null
+     
+# docker-compose up --build
+# volume
+# docker system prune
+# docker volume prune
+# sudo curl -L "https://github.com/docker/compose/releases/download/2.2.3/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# docker run -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=password --name mysql-con -v /var/lib/docker/volumes/mysql/_data mysql:latest --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
