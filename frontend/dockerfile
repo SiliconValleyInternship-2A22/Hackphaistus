@@ -2,13 +2,12 @@
 FROM node:16.13.1
 
 # Install
-RUN mkdir -p /node
-ADD . /node
-WORKDIR /node
+WORKDIR /frontend
+COPY . /frontend
 RUN npm install
 RUN npm install react-scripts
 #CMD ['node', 'server.js']
-
+COPY . ./
 # permission
 # RUN chmod 777 node_modules
 
