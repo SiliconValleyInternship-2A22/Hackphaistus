@@ -24,6 +24,12 @@ http://hackphaistus.tk
 
 
 
+## Service Deployment
+[Hackphaistus 서비스 이용해보기](http://hackphaistus.tk)
+
+
+
+
 ### Tech Stack
 ```
 Frontend : React
