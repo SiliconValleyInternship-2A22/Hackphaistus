@@ -75,8 +75,10 @@ $ docker-compose up --build
 
 ## Detail Introduction of the Service 
 * [Presentation Documentation](https://drive.google.com/file/d/1yq8NO8X9iK4GAPRciUXsCxEQHpxKRADl/view?usp=sharing)
+* [Presentation Video](https://drive.google.com/file/d/1wcs7CKNKTVkxX0HAKJOqZt9Qu67rqShG/view?usp=sharing)
 * [Design Doc](https://bouncy-tuck-1ec.notion.site/Read-me-566537ed671845d68302e3feb7134329)
 * [Flagly](https://flagly.org/course/courses/328/)
+* [Demo Video](https://drive.google.com/file/d/1DwQ9BCurAo9ulmg4ac42bhVNnv2kfCqP/view?usp=sharing)
 
 
 
