@@ -17,14 +17,14 @@ Hackphaistus🔥는 사용자의 관상을 분석하여, 능력치를 제시해�
 
 
 
-## Design Prototype
-[Figma Prototype](https://www.figma.com/file/PS2Uh2ZoxMXotOkz6aZg1w/Hackphaistus-Prototype?node-id=0%3A1)
-
-
-
-
 ## Service Deployment
 [Hackphaistus 서비스 이용해보기](http://hackphaistus.tk)
+
+
+
+
+## Design Prototype
+[Figma Prototype](https://www.figma.com/file/PS2Uh2ZoxMXotOkz6aZg1w/Hackphaistus-Prototype?node-id=0%3A1)
 
 
 
